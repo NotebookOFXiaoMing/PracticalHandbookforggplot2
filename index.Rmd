@@ -1,7 +1,8 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAME HERE"
-date: "`r Sys.Date()`"
+title: "R语言ggplot2科研数据可视化实用手册"
+author: "闫明"
+institute: "南京林业大学"
+date: "2022年5月9号"
 site: bookdown::bookdown_site
 ---
 
