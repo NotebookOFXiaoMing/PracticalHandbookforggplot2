@@ -1,3 +1,8 @@
-down-the-rabbit-hole
-the-pool-of-tears
-a-caucus-race-and-a-long-tale
+r语言rstudior包ggplot2安装-win10
+r语言官网
+rstudio官网
+绘图数据准备
+读取数据
+r语言ggplot2散点图
+r语言ggplot2柱形图
+最基本的柱形图需要准备的数据

@@ -1,0 +1,33 @@
+# R语言ggplot2柱形图
+
+## 最基本的柱形图需要准备的数据
+
+一列x一列y
+
+- 如果柱子垂直 x是离散型数据 y是连续型数据
+
+```{r echo=FALSE, warning=FALSE}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01.xlsx")
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_col()
+```
+
+- 如果想要水平的柱子，就把y设置成离散数据，x设置成连续数据
+
+```{r echo=FALSE, warning=FALSE}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01.xlsx")
+library(ggplot2)
+ggplot(data=dat01,aes(x=var2,y=var1))+
+  geom_col()
+```
+
+数据集
+
+```{r warning=FALSE, echo=FALSE}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01.xlsx")
+knitr::kable(dat01, "simple")
+```
