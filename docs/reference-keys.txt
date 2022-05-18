@@ -2,6 +2,7 @@ r语言rstudior包ggplot2安装-win10
 r语言官网
 rstudio官网
 绘图数据准备
+文件的路径
 读取数据
 r语言ggplot2散点图
 r语言ggplot2柱形图
