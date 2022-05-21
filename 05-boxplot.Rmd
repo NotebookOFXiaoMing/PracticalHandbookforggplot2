@@ -394,10 +394,15 @@ ggplot(data=dat02,aes(x=dose,y=len,fill=supp))+
                width=0.2)
 ```
 
-类似于箱线图还有小提琴图的还有 
+## 类似于箱线图还有小提琴图的还有 
+
 - 抖动的散点图 geom_jitter()
-- 蜂群图 需要借助额外的R包ggbeeswarm https://github.com/eclarke/ggbeeswarm
-- 山脊图 借助额外的R包 ggridges https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
+
+- 蜂群图 需要借助额外的R包ggbeeswarm
+https://github.com/eclarke/ggbeeswarm
+
+- 山脊图 借助额外的R包 ggridges
+https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html
 
 
 geom_jitter
