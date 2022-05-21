@@ -394,7 +394,7 @@ ggplot(data=dat02,aes(x=dose,y=len,fill=supp))+
                width=0.2)
 ```
 
-## 类似于箱线图还有小提琴图的还有 
+## 类似于箱线图/小提琴图的还有 
 
 - 抖动的散点图 geom_jitter()
 
