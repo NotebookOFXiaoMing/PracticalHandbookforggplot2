@@ -68,8 +68,130 @@ ggplot(data=dat01,aes(x=var1,y=var2))+
            width = 0.2)
 ```
 
-如果统一修改边框颜色，填充颜色这些属性，比如上面的例子，5个柱子全都设置成一样的。如果想要
+如果统一修改边框颜色，填充颜色这些属性，比如上面的例子，5个柱子全都设置成一样的，就把参数设置到`aes()`的外面。如果想要用数据中的某一列来映射颜色。需要把参数写到`aes()`的里面。
 
+柱形图还有一个比较常用的操作是添加误差线，这里假设已经算好了标准差，我们将标准差整理到数据集里，格式如下
+
+<img src="img/04-barplot/001.png">
+
+添加误差线的函数是`geom_errorbar()`
+
+如果是垂直与x轴的误差线，需要制定ymin和ymax两个参数
+
+作图代码
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_col()+
+  geom_errorbar(aes(ymin=var2-sd_value,
+                    ymax=var2+sd_value))
+```
+
+误差线函数比较常用的三个参数是
+
+- width 调节误差线的宽度
+- color 误差线的颜色
+- lty 线的类型，就是实线 虚线 这些
+
+更改这三个参数
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_col(fill="grey")+
+  geom_errorbar(aes(ymin=var2-sd_value,
+                    ymax=var2+sd_value),
+                color="red",
+                width=0.4,
+                lty="dashed")
+```
+
+柱形图还有一个比较常用的操作是组间比较，做统计检验后添加p值或者显著性的星号，这里还是假设已经做好了统计检验，这里使用`annotate()`函数来添加线段和文本。这里有一个知识点是如果是离散数据作为x轴，第一个柱子的横坐标是1,第二个第三个依次是2，和3 这样
+
+首先是`annotate()`函数添加添加文本，需要制定四个内容，
+
+- 添加注释的类型 文本是geom = "text"
+- 添加文本的位置 一个 x 和一个 y
+- 添加文本的内容 label = "ABC"
+
+如下代码 我在 A B 两个柱子中间 横坐标是1.5 纵坐标3的位置添加一个P value = 0.01的文本,设置文本的颜色为蓝色
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_col(fill="grey")+
+  geom_errorbar(aes(ymin=var2-sd_value,
+                    ymax=var2+sd_value),
+                color="red",
+                width=0.4,
+                lty="dashed")+
+  annotate(geom = "text",x=1.5,y=3,
+           label="P value = 0.01",color="blue")
+```
+
+接下来是添加注释的线段，线段需要制定的参数是
+
+- geom="segment"
+
+- 线段的起始位置 x,y 线段的终止位置x y
+
+- 还可以更改颜色 线型 粗细 之类的
+
+看如下代码
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_col(fill="grey")+
+  geom_errorbar(aes(ymin=var2-sd_value,
+                    ymax=var2+sd_value),
+                color="red",
+                width=0.4,
+                lty="dashed")+
+  annotate(geom = "text",x=1.5,y=3,
+           label="P value = 0.01",color="blue")+
+  annotate(geom = "segment",x=1,y=1.5,xend=1,yend=2.8,
+           color="black",size=1)
+```
+
+接下来再来添加两个线段
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/04-barplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_col(fill="grey")+
+  geom_errorbar(aes(ymin=var2-sd_value,
+                    ymax=var2+sd_value),
+                color="red",
+                width=0.4,
+                lty="dashed")+
+  annotate(geom = "text",x=1.5,y=3,
+           label="P value = 0.01",color="blue")+
+  annotate(geom = "segment",x=1,y=1.5,xend=1,yend=2.8,
+           color="black",size=1)+
+  annotate(geom = "segment",x=2,y=2.5,xend=2,yend=2.8,
+           color="black",size=1)+
+    annotate(geom = "segment",x=1,y=2.8,xend=2,yend=2.8,
+           color="black",size=1)
+```
+
+用这个annotate()函数相对来说会比较繁琐，如果要添加比较多的线段的话代码会很长，但是这个可定制性比较强，我目前还想不到其他比较合适的替代方案
 
 ## 簇状柱形图
 

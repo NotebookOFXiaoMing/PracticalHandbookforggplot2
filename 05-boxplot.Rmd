@@ -1,0 +1,288 @@
+# R语言ggplot2箱线图
+
+这一章主要介绍的是 箱线图 小提琴图 蜂群图 山脊图 这类，因为他们的作用都是一样的，主要就是为了展示数据分布
+
+## 首先是箱线图
+
+最基本的箱线图需要准备两列数据
+
+<img src="img/05-boxplot/001.png">
+
+读取数据
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+```
+
+做箱线图使用到的函数是`geom_boxplot()`
+
+最基本的箱线图的代码
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_boxplot()
+```
+
+箱线图比较常修改的参数是
+- color 边框颜色
+- fill 填充颜色
+- width 箱子整体的宽度
+
+如果要修改成统一的颜色，就把参数写到aes()的外面，参数值是真实的颜色
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_boxplot(color="red",
+               fill="blue",
+               width=0.2)
+```
+
+如果要根据不同的变量赋予不同的颜色，就把参数写到aes()的里面，参数值是数据的列名
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(ggplot2)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_boxplot(aes(fill=var1))
+```
+
+箱线图还有一个比较常用的操作是添加顶部和底部的小短线，这个geom_boxplot()函数里好像没有专门的参数设置，需要我们借助误差线函数geom_errorbar()来添加,这里展示的不是真实误差，而是数据集的最大值和最小值
+
+这里需要先生成一个新的数据集，每个变量的最小值和最大值
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(tidyverse)
+dat01 %>% 
+  group_by(var1) %>% 
+  summarise(max_value=max(var2),
+            min_value=min(var2)) -> dat01.1
+dat01.1
+```
+
+用这个新的数据集添加小短线
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(tidyverse)
+dat01 %>% 
+  group_by(var1) %>% 
+  summarise(max_value=max(var2),
+            min_value=min(var2)) -> dat01.1
+dat01.1
+library(ggplot2)
+ggplot()+
+  geom_boxplot(data=dat01,aes(x=var1,y=var2,fill=var1))+
+  geom_errorbar(data=dat01.1,
+                aes(x=var1,
+                    ymin=min_value,
+                    ymax=max_value))
+
+ggplot()+
+  geom_errorbar(data=dat01.1,
+                aes(x=var1,
+                    ymin=min_value,
+                    ymax=max_value))+
+  geom_boxplot(data=dat01,aes(x=var1,y=var2,fill=var1))
+```
+这里有一个知识点是每一个作图函数都可以用不同的数据集，如果要在同一个图上用不同的数据集的话，尽量把数据集接到作图函数里，不写到ggplot()函数里
+
+ggplot2作图是不同函数依次叠加，所以排在后面的函数生成的图形会把前面的覆盖掉，如果觉得有影响 调换一下函数的顺序就可以
+
+误差线函数对应的可以修改的参数比较常用的就是
+- width 宽度
+- color 颜色
+- lty 线型
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(tidyverse)
+dat01 %>% 
+  group_by(var1) %>% 
+  summarise(max_value=max(var2),
+            min_value=min(var2)) -> dat01.1
+dat01.1
+library(ggplot2)
+
+ggplot()+
+  geom_errorbar(data=dat01.1,
+                aes(x=var1,
+                    ymin=min_value,
+                    ymax=max_value),
+               color="red",width=0.3,lty="dashed")+
+  geom_boxplot(data=dat01,aes(x=var1,y=var2,fill=var1))
+```
+
+箱线图有时候还会添加统计检验的显著性等信息，额外的注释信息都可以借助annotate()函数实现，这里的一个小知识点是离散变量的x轴第一个位置是x=1
+
+annotate() 函数比较常用的是添加文本和线段
+
+添加文本需要用到的参数是 
+- geom = "text"
+- x，y的坐标
+- label 文本的内容
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(tidyverse)
+dat01 %>% 
+  group_by(var1) %>% 
+  summarise(max_value=max(var2),
+            min_value=min(var2)) -> dat01.1
+dat01.1
+library(ggplot2)
+
+ggplot()+
+  geom_errorbar(data=dat01.1,
+                aes(x=var1,
+                    ymin=min_value,
+                    ymax=max_value),
+               color="red",width=0.3,lty="dashed")+
+  geom_boxplot(data=dat01,aes(x=var1,y=var2,fill=var1))+
+  annotate(geom="text",x=1.5,y=0.85,
+           label="Pvalue = 0.01",color="blue",
+           fontface="italic")
+```
+
+添加线段需要用到的参数是 
+- geom = "segment"
+- 线段起始位置的x，y坐标和线段终止位置的x，y坐标
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(tidyverse)
+dat01 %>% 
+  group_by(var1) %>% 
+  summarise(max_value=max(var2),
+            min_value=min(var2)) -> dat01.1
+dat01.1
+library(ggplot2)
+
+ggplot()+
+  geom_errorbar(data=dat01.1,
+                aes(x=var1,
+                    ymin=min_value,
+                    ymax=max_value),
+               color="red",width=0.3,lty="dashed")+
+  geom_boxplot(data=dat01,aes(x=var1,y=var2,fill=var1))+
+  annotate(geom="text",x=1.5,y=0.85,
+           label="Pvalue = 0.01",color="blue",
+           fontface="italic")+
+  annotate(geom = "segment",
+           x = 1,y = 0.8,
+           xend = 1,yend = 0.82,
+           size=1)
+```
+annotate()函数添加相对比较繁琐，但可定制性比较强
+
+再来添加两条线段
+
+```{r}
+library(readxl)
+dat01<-read_excel("example_data/05-boxplot/dat01_1.xlsx")
+head(dat01)
+library(tidyverse)
+dat01 %>% 
+  group_by(var1) %>% 
+  summarise(max_value=max(var2),
+            min_value=min(var2)) -> dat01.1
+dat01.1
+library(ggplot2)
+
+ggplot()+
+  geom_errorbar(data=dat01.1,
+                aes(x=var1,
+                    ymin=min_value,
+                    ymax=max_value),
+               color="red",width=0.3,lty="dashed")+
+  geom_boxplot(data=dat01,aes(x=var1,y=var2,fill=var1))+
+  annotate(geom="text",x=1.5,y=0.85,
+           label="Pvalue = 0.01",color="blue",
+           fontface="italic")+
+  annotate(geom = "segment",
+           x = 1,y = 0.8,
+           xend = 1,yend = 0.82,
+           size=1)+
+  annotate(geom = "segment",
+           x = 1,y = 0.82,
+           xend = 2,yend = 0.82,
+           size=1)+
+  annotate(geom = "segment",
+           x = 2,y = 0.82,
+           xend = 2,yend = 0.815,
+           size=1)
+```
+如果还想在不同的位置添加文本和线段，可以按照上述思路来设置
+
+## 接下来是带有分组的箱线图
+
+部分示例数据集如下
+<img src="img/05-boxplot/002.png">
+
+最基本的分组箱线图
+
+```{r}
+library(readxl)
+dat02<-read_excel("example_data/05-boxplot/dat02.xlsx")
+library(ggplot2)
+ggplot(data=dat02,aes(x=dose,y=len,fill=supp))+
+  geom_boxplot()
+```
+
+分组箱线图添加误差线,还是需要先生成一个新的数据集
+
+
+```{r}
+library(readxl)
+dat02<-read_excel("example_data/05-boxplot/dat02.xlsx")
+library(tidyverse)
+dat02 %>% 
+  group_by(dose,supp) %>% 
+  summarise(min_value=min(len),
+            max_value=max(len)) -> dat02.1
+dat02.1
+```
+
+用算好的数据添加误差线
+
+```{r}
+library(readxl)
+dat02<-read_excel("example_data/05-boxplot/dat02.xlsx")
+library(tidyverse)
+dat02 %>% 
+  group_by(dose,supp) %>% 
+  summarise(min_value=min(len),
+            max_value=max(len)) -> dat02.1
+dat02.1
+library(ggplot2)
+ggplot()+
+  geom_errorbar(data=dat02.1,
+                aes(x=dose,
+                    ymin=min_value,
+                    ymax=max_value),
+                position = position_dodge(0.9),
+                width=0.2)+
+  geom_boxplot(data=dat02,aes(x=dose,y=len,fill=supp),
+               position = position_dodge(0.9))
+```

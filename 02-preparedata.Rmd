@@ -87,3 +87,7 @@ library(readxl)
 dat04 <- read_excel(path = "D:/Bookofggplot2/PracticalHandbookforggplot2/example_data/02-preparedata/dat04.xlsx",col_names = TRUE)
 dat04
 ```
+
+## 读取数据集以后对数据集进行操作
+
+
