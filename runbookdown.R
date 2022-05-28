@@ -11,3 +11,35 @@ data <- data.frame(specie,condition,value)
 library(rio)
 export(data,file = "example_data/04-barplot/dat02_grouped_barplot.xlsx")
 
+dat01<-read_excel("example_data/05-boxplot/dat01.xlsx")
+dim(dat01)
+dat01 %>% 
+  group_by(var1) %>% 
+  sample_n(10) %>% 
+  rio::export(file = "example_data/05-boxplot/dat01_1.xlsx")
+
+?geom_boxplot
+
+dat01 %>% 
+  group_by(var1) %>% 
+  summarise(value=max(var2))
+head(dat01)
+ggplot(data=dat01,aes(x=var1,y=var2))+
+  geom_boxplot()+
+  geom_errorbar(data=dat01.1,
+                aes(x=var1,
+                    ymin=min_value,
+                    ymax=max_value))
+
+read_csv("example_data/05-boxplot/boxplot_example_1.csv") %>% 
+  rio::export(file = "example_data/05-boxplot/dat02.xlsx")
+
+help(package="ggplot2")
+library(tidyverse)
+dat<-read_excel("example_data/06-lineplot/dat04_1.xlsx")
+dat %>% 
+  mutate(lower95=var2-0.5,
+         upper95=var2+0.5) %>% 
+  rio::export(file = "example_data/06-lineplot/dat04_2.xlsx")
+
+library()
