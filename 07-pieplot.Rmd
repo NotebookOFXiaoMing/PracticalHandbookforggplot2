@@ -286,6 +286,10 @@ ggplot()+
 
 ## 饼状图的两个实例
 
+数据代码来源
+
+https://github.com/jack-davison/TidyTuesday/blob/master/R/2021_02_16_dubois.R
+
 ```{r}
 library(tidyverse)
 
@@ -375,6 +379,10 @@ ggdraw(plot = pie) +
 ```
 
 第二个实例
+
+数据代码来源
+
+https://github.com/etmckinley/Tidy-Tuesday/blob/main/30%20Day%20Chart%20Challenge/2022/1/1-%20passing%20feet.R
 
 ```{r}
 library(tidyverse)
