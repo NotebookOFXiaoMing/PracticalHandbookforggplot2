@@ -283,3 +283,130 @@ ggplot()+
   theme(legend.position = "none")+
   scale_fill_manual(values = c("#5b9bd5","#e64b35"))
 ```
+
+## 饼状图的两个实例
+
+```{r}
+library(tidyverse)
+
+library(cowplot)
+
+tuesdata_occupation <- readr::read_csv("example_data/07-pieplot/20220530_piechart.csv")
+dat = tuesdata_occupation %>%
+  janitor::clean_names() %>%
+  mutate(plot_perc = percentage / sum(percentage)) %>%
+  mutate(plot_perc = (plot_perc * 61)/100) %>%
+  bind_rows(tibble(group = c("Negroes", "Whites"),
+                   occupation = c("empty", "empty"),
+                   percentage = c(0,0),
+                   plot_perc = c(0.195, 0.195))) %>%
+  mutate(occupation = factor(occupation,
+                             levels = c("Agriculture, Fisheries and Mining",
+                                        "Domestic and Personal Service",
+                                        "Manufacturing and Mechanical Industries",
+                                        "Trade and Transportation",
+                                        "Professions",
+                                        "Empty"))) %>%
+  arrange(desc(group), occupation) %>%
+  mutate(ypos = cumsum(plot_perc)- 0.5*plot_perc) %>%
+  arrange(occupation)
+
+
+lab_dat = dat %>%
+  select(occupation) %>%
+  distinct() %>%
+  drop_na() %>%
+  mutate(x = c(-1.5, 1.5, -1.5, 1.5, 1.5),
+         y = c(4, 5, 2, 1, 3),
+         occupation = case_when(
+           occupation == "Agriculture, Fisheries and Mining" ~ "AGRICULTURE, FISHERIES\nAND MINING.",
+           occupation == "Domestic and Personal Service" ~ "DOMESTIC AND\nPERSONAL SERVICE.",
+           occupation == "Manufacturing and Mechanical Industries" ~ "MANUFACTURING AND\nMECHANICAL INDUSTRIES.",
+           occupation == "Trade and Transportation" ~ "TRADE AND\nTRANSPORTATION.",
+           occupation == "Professions" ~ "PROFESSIONS."
+         ))
+dat
+
+pie = ggplot(dat, aes(y = "", x = plot_perc, 
+                      fill = occupation, group = group)) +
+  geom_col(aes(color = occupation == "empty")) +
+  coord_polar(start = pi - (55*pi)/180) +
+  scale_fill_manual(values = c("#b8243c", "#f2c50a", 
+                               "#5a6796", "#d5c8b7", "#ab927a"), 
+                    na.translate = F) +
+  theme_void() +
+  theme(legend.position = "none",
+        plot.background = element_rect(color = NA, 
+                                       fill = "#ece5d5"),
+        text = element_text(family = "mono"),
+        plot.title = element_text(hjust = .5, face = "bold"), 
+        plot.margin = unit(rep(.5,4), "cm")) +
+  geom_text(aes(x = ypos, 
+                label = ifelse(occupation == "empty", NA, 
+                               glue::glue("{round(percentage,1)}%"))),
+            nudge_y = .35, family = "mono") +
+  annotate(geom = "text", x = 0.65, y = 1.5, 
+           label = "NEGROES.", family = "mono") +
+  annotate(geom = "text", x = 0.15, y = 1.5, 
+           label = "WHITES.", family = "mono") +
+  scale_color_manual(values = c("#5f4e3b", NA)) +
+  guides(color = guide_none()) +
+  labs(title = "OCCUPATIONS OF NEGROES AND WHITES IN GEORGIA.")
+pie
+
+legend = ggplot(lab_dat, aes(x,y, fill = occupation)) +
+  geom_point(shape = 21, size = 10) +
+  geom_text(data = lab_dat %>% filter(x == -1.5),
+            aes(label = occupation),
+            nudge_x = .55, family = "mono", size = 3) +
+  geom_text(data = lab_dat %>% filter(x == 1.5),
+            aes(label = occupation),
+            nudge_x = -.4, family = "mono", size = 3) +
+  scale_fill_manual(values = c("#b8243c", "#f2c50a", 
+                               "#5a6796", "#d5c8b7", "#ab927a"), na.translate = F) +
+  theme_void() +
+  theme(text = element_text(family = "mono"),
+        legend.position = "none", aspect.ratio = .3) +
+  coord_cartesian(clip = "off")
+
+ggdraw(plot = pie) +
+  draw_plot(legend, 
+            scale = .7)
+```
+
+第二个实例
+
+```{r}
+library(tidyverse)
+
+library(gggibbous)
+
+team_passing<-readr::read_csv("example_data/07-pieplot/20220530_piechart_01.csv")
+
+team_info<-readr::read_csv("example_data/07-pieplot/team_info.csv")
+limits=c(0,2)
+team_passing %>% 
+  filter(Comp == "Premier League") %>% 
+  left_join(team_info %>% select(Squad, Primary, Secondary)) %>% 
+  #bind_rows(team_passing %>% 
+  #            filter(Comp == "Premier League") %>% 
+  #            mutate(ratio=1)) %>% 
+  ggplot()+
+  geom_moon(aes(ratio=ratio, fill=Secondary), x=1, y=1, right=FALSE, size=20)+
+  geom_moon(aes(ratio=1-ratio, fill=Primary), x=1, y=1, right=TRUE, size=20)+
+  geom_text(aes(label = paste0(format(round((1-ratio)*100,1), nsmall=1), "%")),
+            x=1.25, y=1, size=2, family="serif", color="white")+
+  coord_cartesian(xlim=limits, ylim=limits)+
+  facet_wrap(~reorder(Squad,-ratio),ncol = 8)+
+  scale_fill_identity()+
+  theme_void()+
+  theme(legend.position = "none",
+        #text=element_text(size=40, family = "serif"),
+        #plot.caption=element_text(size=14),
+        #plot.subtitle = element_text(size=18),
+        plot.margin = margin(.2,.2,.2,.2, unit="in"))+
+  labs(title= "What foot do Premier League teams pass with?",
+       subtitle= "2021-2022 Premier League season\n",
+       caption= "Plot: @etmckinley | data: StatsBomb via FBRef and {worldfootballr}")
+
+```
