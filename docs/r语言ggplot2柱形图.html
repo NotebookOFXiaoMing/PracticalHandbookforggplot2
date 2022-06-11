@@ -191,6 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#pheatmap热图"><i class="fa fa-check"></i><b>8.1</b> pheatmap热图</a></li>
 <li class="chapter" data-level="8.2" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#ggplot2热图"><i class="fa fa-check"></i><b>8.2</b> ggplot2热图</a></li>
 <li class="chapter" data-level="8.3" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#ggplot2气泡热图图"><i class="fa fa-check"></i><b>8.3</b> ggplot2气泡热图图</a></li>
+<li class="chapter" data-level="8.4" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#一个完整的例子"><i class="fa fa-check"></i><b>8.4</b> 一个完整的例子</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -219,11 +220,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>如果柱子垂直 x是离散型数据 y是连续型数据</li>
 </ul>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <ul>
 <li>如果想要水平的柱子，就把y设置成离散数据，x设置成连续数据</li>
 </ul>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <ul>
 <li>数据集</li>
 </ul>
@@ -300,7 +301,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb13-3"><a href="r语言ggplot2柱形图.html#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color=</span><span class="st">&quot;red&quot;</span>,<span class="at">size=</span><span class="dv">3</span>,</span>
 <span id="cb13-4"><a href="r语言ggplot2柱形图.html#cb13-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill=</span><span class="st">&quot;blue&quot;</span>,<span class="at">alpha=</span><span class="fl">0.5</span>,</span>
 <span id="cb13-5"><a href="r语言ggplot2柱形图.html#cb13-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">width =</span> <span class="fl">0.2</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>如果统一修改边框颜色，填充颜色这些属性，比如上面的例子，5个柱子全都设置成一样的，就把参数设置到<code>aes()</code>的外面。如果想要用数据中的某一列来映射颜色。需要把参数写到<code>aes()</code>的里面。</p>
 <p>柱形图还有一个比较常用的操作是添加误差线，这里假设已经算好了标准差，我们将标准差整理到数据集里，格式如下</p>
 <p><img src="img/04-barplot/001.png"></p>
@@ -323,7 +324,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-3"><a href="r语言ggplot2柱形图.html#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
 <span id="cb16-4"><a href="r语言ggplot2柱形图.html#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>var2<span class="sc">-</span>sd_value,</span>
 <span id="cb16-5"><a href="r语言ggplot2柱形图.html#cb16-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax=</span>var2<span class="sc">+</span>sd_value))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>误差线函数比较常用的三个参数是</p>
 <ul>
 <li>width 调节误差线的宽度</li>
@@ -350,7 +351,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb19-6"><a href="r语言ggplot2柱形图.html#cb19-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">&quot;red&quot;</span>,</span>
 <span id="cb19-7"><a href="r语言ggplot2柱形图.html#cb19-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.4</span>,</span>
 <span id="cb19-8"><a href="r语言ggplot2柱形图.html#cb19-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">lty=</span><span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>柱形图还有一个比较常用的操作是组间比较，做统计检验后添加p值或者显著性的星号，这里还是假设已经做好了统计检验，这里使用<code>annotate()</code>函数来添加线段和文本。这里有一个知识点是如果是离散数据作为x轴，第一个柱子的横坐标是1,第二个第三个依次是2，和3 这样</p>
 <p>首先是<code>annotate()</code>函数添加添加文本，需要制定四个内容，</p>
 <ul>
@@ -380,7 +381,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb22-8"><a href="r语言ggplot2柱形图.html#cb22-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">lty=</span><span class="st">&quot;dashed&quot;</span>)<span class="sc">+</span></span>
 <span id="cb22-9"><a href="r语言ggplot2柱形图.html#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">&quot;text&quot;</span>,<span class="at">x=</span><span class="fl">1.5</span>,<span class="at">y=</span><span class="dv">3</span>,</span>
 <span id="cb22-10"><a href="r语言ggplot2柱形图.html#cb22-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">label=</span><span class="st">&quot;P value = 0.01&quot;</span>,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>接下来是添加注释的线段，线段需要制定的参数是</p>
 <ul>
 <li><p>geom=“segment”</p></li>
@@ -411,7 +412,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb25-10"><a href="r语言ggplot2柱形图.html#cb25-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">label=</span><span class="st">&quot;P value = 0.01&quot;</span>,<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)<span class="sc">+</span></span>
 <span id="cb25-11"><a href="r语言ggplot2柱形图.html#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">&quot;segment&quot;</span>,<span class="at">x=</span><span class="dv">1</span>,<span class="at">y=</span><span class="fl">1.5</span>,<span class="at">xend=</span><span class="dv">1</span>,<span class="at">yend=</span><span class="fl">2.8</span>,</span>
 <span id="cb25-12"><a href="r语言ggplot2柱形图.html#cb25-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>接下来再来添加两个线段</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="r语言ggplot2柱形图.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb26-2"><a href="r语言ggplot2柱形图.html#cb26-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/04-barplot/dat01_1.xlsx&quot;</span>)</span>
@@ -440,7 +441,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb28-14"><a href="r语言ggplot2柱形图.html#cb28-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="dv">1</span>)<span class="sc">+</span></span>
 <span id="cb28-15"><a href="r语言ggplot2柱形图.html#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">&quot;segment&quot;</span>,<span class="at">x=</span><span class="dv">1</span>,<span class="at">y=</span><span class="fl">2.8</span>,<span class="at">xend=</span><span class="dv">2</span>,<span class="at">yend=</span><span class="fl">2.8</span>,</span>
 <span id="cb28-16"><a href="r语言ggplot2柱形图.html#cb28-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">color=</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>用这个annotate()函数相对来说会比较繁琐，如果要添加比较多的线段的话代码会很长，但是这个可定制性比较强，我目前还想不到其他比较合适的替代方案</p>
 </div>
 <div id="簇状柱形图" class="section level2" number="4.2">
@@ -526,7 +527,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb29-5"><a href="r语言ggplot2柱形图.html#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,</span>
 <span id="cb29-6"><a href="r语言ggplot2柱形图.html#cb29-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb29-7"><a href="r语言ggplot2柱形图.html#cb29-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <ul>
 <li><p>这里<code>stat="identity"</code>我一直没有搞清楚是什么意思,记住是必须要写的</p></li>
 <li><p>如果不加<code>position="dodge"</code>默认是堆积柱形图</p></li>
@@ -548,14 +549,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb30-7"><a href="r语言ggplot2柱形图.html#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,</span>
 <span id="cb30-8"><a href="r语言ggplot2柱形图.html#cb30-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb30-9"><a href="r语言ggplot2柱形图.html#cb30-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="r语言ggplot2柱形图.html#cb31-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>var2<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>var2,</span>
 <span id="cb31-2"><a href="r语言ggplot2柱形图.html#cb31-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>))</span>
 <span id="cb31-3"><a href="r语言ggplot2柱形图.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>var1,<span class="at">y=</span>value))<span class="sc">+</span></span>
 <span id="cb31-4"><a href="r语言ggplot2柱形图.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,</span>
 <span id="cb31-5"><a href="r语言ggplot2柱形图.html#cb31-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb31-6"><a href="r语言ggplot2柱形图.html#cb31-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-73-2.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
 <p>堆积柱形图还有一个经常会遇到的问题是添加误差线，现在假设我们已经把标准差算好了，整理excel里，数据格式如下，在原有数据的基础上添加一列标准差的数据</p>
 <table>
 <thead>
@@ -654,7 +655,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb32-7"><a href="r语言ggplot2柱形图.html#cb32-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;dodge&quot;</span>)<span class="sc">+</span></span>
 <span id="cb32-8"><a href="r语言ggplot2柱形图.html#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>value<span class="sc">-</span>sd_value,</span>
 <span id="cb32-9"><a href="r语言ggplot2柱形图.html#cb32-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax=</span>value<span class="sc">+</span>sd_value))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <ul>
 <li>误差线主要的调节参数就两个，一个是width误差线的宽度，一个是color颜色</li>
 </ul>
@@ -669,7 +670,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb33-9"><a href="r语言ggplot2柱形图.html#cb33-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax=</span>value<span class="sc">+</span>sd_value),</span>
 <span id="cb33-10"><a href="r语言ggplot2柱形图.html#cb33-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.4</span>,</span>
 <span id="cb33-11"><a href="r语言ggplot2柱形图.html#cb33-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>簇状柱形图的误差线全部集中在同一位置，需要我们用参数<code>position = position_dodge(1)</code>调节开,这里需要注意一点是如果调节误差线的位置，需要把<code>fill=var2</code>参数写到<code>ggplot</code>里，<code>position_dodge()</code>里面的数值具体应该设置多少我也搞不清楚，每次都要设置好几次</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="r语言ggplot2柱形图.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb34-2"><a href="r语言ggplot2柱形图.html#cb34-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/04-barplot/dat02_grouped_barplot_01.xlsx&quot;</span>)</span>
@@ -682,7 +683,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb34-9"><a href="r语言ggplot2柱形图.html#cb34-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.4</span>,</span>
 <span id="cb34-10"><a href="r语言ggplot2柱形图.html#cb34-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">&quot;blue&quot;</span>,</span>
 <span id="cb34-11"><a href="r语言ggplot2柱形图.html#cb34-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="fl">0.9</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>其他的美化，比如让柱子贴着底，坐标轴标签，更改默认配色等</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="r语言ggplot2柱形图.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb35-2"><a href="r语言ggplot2柱形图.html#cb35-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/04-barplot/dat02_grouped_barplot_01.xlsx&quot;</span>)</span>
@@ -698,7 +699,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb35-12"><a href="r语言ggplot2柱形图.html#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand=</span><span class="fu">expansion</span>(<span class="at">mult=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.1</span>)))<span class="sc">+</span></span>
 <span id="cb35-13"><a href="r语言ggplot2柱形图.html#cb35-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span><span class="ot">=</span><span class="st">&quot;grey&quot;</span>,<span class="st">&quot;B&quot;</span><span class="ot">=</span><span class="st">&quot;black&quot;</span>,<span class="st">&quot;C&quot;</span><span class="ot">=</span><span class="st">&quot;green&quot;</span>))<span class="sc">+</span></span>
 <span id="cb35-14"><a href="r语言ggplot2柱形图.html#cb35-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;AAAAA&quot;</span>,<span class="at">y=</span><span class="st">&quot;BBBBB&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <div id="接下来看每周一图里面的例子" class="section level3" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> 接下来看每周一图里面的例子</h3>
 <p>这里 <code>aes()</code>的内容是可以写到作图函数里，也可以写到ggplot里，这里还是有区别的，比如上面提到的误差线的位置调节</p>
@@ -720,7 +721,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb36-16"><a href="r语言ggplot2柱形图.html#cb36-16" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">0</span>),</span>
 <span id="cb36-17"><a href="r语言ggplot2柱形图.html#cb36-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
 <span id="cb36-18"><a href="r语言ggplot2柱形图.html#cb36-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>()) </span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 </div>
 </div>
 <div id="堆积柱形图" class="section level2" number="4.3">
@@ -732,7 +733,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb37-4"><a href="r语言ggplot2柱形图.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,</span>
 <span id="cb37-5"><a href="r语言ggplot2柱形图.html#cb37-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb37-6"><a href="r语言ggplot2柱形图.html#cb37-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;stack&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>堆积柱形图有一个特点是除了展示真实数据外，还可以展示比例,需要我们把<code>position="stack"</code>改成<code>position="fill"</code></p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="r语言ggplot2柱形图.html#cb38-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/04-barplot/dat02_grouped_barplot.xlsx&quot;</span>)</span>
 <span id="cb38-2"><a href="r语言ggplot2柱形图.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -740,7 +741,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb38-4"><a href="r语言ggplot2柱形图.html#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,</span>
 <span id="cb38-5"><a href="r语言ggplot2柱形图.html#cb38-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb38-6"><a href="r语言ggplot2柱形图.html#cb38-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;fill&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>接下来就是更改柱子的顺序，和簇状柱形图调节顺序一样，只要更改原始数据的因子水平,默认的顺序是从上往下排的</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="r语言ggplot2柱形图.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb39-2"><a href="r语言ggplot2柱形图.html#cb39-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/04-barplot/dat02_grouped_barplot.xlsx&quot;</span>)</span>
@@ -751,14 +752,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb39-7"><a href="r语言ggplot2柱形图.html#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,</span>
 <span id="cb39-8"><a href="r语言ggplot2柱形图.html#cb39-8" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb39-9"><a href="r语言ggplot2柱形图.html#cb39-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;stack&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="r语言ggplot2柱形图.html#cb40-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>var2<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>var2,</span>
 <span id="cb40-2"><a href="r语言ggplot2柱形图.html#cb40-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;A&quot;</span>))</span>
 <span id="cb40-3"><a href="r语言ggplot2柱形图.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>var1,<span class="at">y=</span>value))<span class="sc">+</span></span>
 <span id="cb40-4"><a href="r语言ggplot2柱形图.html#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,</span>
 <span id="cb40-5"><a href="r语言ggplot2柱形图.html#cb40-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb40-6"><a href="r语言ggplot2柱形图.html#cb40-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;stack&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-82-2.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
 <ul>
 <li>堆积柱形图添加误差线不常用，但也有人有这个需求，需要对原始数据有一个累加处理用来指定误差线的y坐标</li>
 </ul>
@@ -780,7 +781,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb41-16"><a href="r语言ggplot2柱形图.html#cb41-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax=</span>new_col<span class="sc">+</span>sd_value),</span>
 <span id="cb41-17"><a href="r语言ggplot2柱形图.html#cb41-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.4</span>,</span>
 <span id="cb41-18"><a href="r语言ggplot2柱形图.html#cb41-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">color=</span><span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>堆积柱形图还有一个经常遇到的问题是在图上添加文字，我们自数据集里添加新的列指定文本标签和文本标签的坐标,</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="r语言ggplot2柱形图.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb42-2"><a href="r语言ggplot2柱形图.html#cb42-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/04-barplot/dat02_grouped_barplot_02.xlsx&quot;</span>)</span>
@@ -903,7 +904,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb43-5"><a href="r语言ggplot2柱形图.html#cb43-5" aria-hidden="true" tabindex="-1"></a>           <span class="fu">aes</span>(<span class="at">fill=</span>var2),</span>
 <span id="cb43-6"><a href="r语言ggplot2柱形图.html#cb43-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">position =</span> <span class="st">&quot;stack&quot;</span>)<span class="sc">+</span></span>
 <span id="cb43-7"><a href="r语言ggplot2柱形图.html#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x=</span>var1,<span class="at">y=</span>text_y,<span class="at">label=</span>text))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>美化 更改配色</p>
 <div id="实际例子" class="section level3" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> 实际例子</h3>
@@ -912,7 +913,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb44-3"><a href="r语言ggplot2柱形图.html#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-4"><a href="r语言ggplot2柱形图.html#cb44-4" aria-hidden="true" tabindex="-1"></a>bechdel_test_df<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">&quot;example_data/04-barplot/bechdel_test_df.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 43 Columns: 4
-## -- Column specification -----------------------------------------------------------------------------
+## -- Column specification -------------------------------------------------
 ## Delimiter: &quot;,&quot;
 ## chr (2): year_group, clean_test
 ## dbl (2): category_count, category_prop
@@ -921,7 +922,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="r语言ggplot2柱形图.html#cb46-1" aria-hidden="true" tabindex="-1"></a>bechdel_test_text <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;example_data/04-barplot/bechdel_test_text.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 5 Columns: 8
-## -- Column specification -----------------------------------------------------------------------------
+## -- Column specification -------------------------------------------------
 ## Delimiter: &quot;,&quot;
 ## chr (3): year_group, clean_test, label
 ## dbl (5): category_count, category_prop, prop_cum, prop_cum_lag, y
@@ -930,7 +931,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="r语言ggplot2柱形图.html#cb48-1" aria-hidden="true" tabindex="-1"></a>bechdel_step_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;example_data/04-barplot/bechdel_step_df.csv&quot;</span>)</span></code></pre></div>
 <pre><code>## Rows: 9 Columns: 6
-## -- Column specification -----------------------------------------------------------------------------
+## -- Column specification -------------------------------------------------
 ## Delimiter: &quot;,&quot;
 ## chr (1): year_group
 ## dbl (5): category_prop, x_coord, x_end_coord, y_coord, y_end_coord
@@ -1005,7 +1006,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb50-66"><a href="r语言ggplot2柱形图.html#cb50-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">20</span>, <span class="dv">90</span>, <span class="dv">25</span>, <span class="dv">45</span>),</span>
 <span id="cb50-67"><a href="r语言ggplot2柱形图.html#cb50-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;#f0f0f0&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#f0f0f0&quot;</span>)</span>
 <span id="cb50-68"><a href="r语言ggplot2柱形图.html#cb50-68" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 
 </div>
 </div>
