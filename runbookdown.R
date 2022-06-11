@@ -42,4 +42,7 @@ dat %>%
          upper95=var2+0.5) %>% 
   rio::export(file = "example_data/06-lineplot/dat04_2.xlsx")
 
-library()
+#install.packages("gggibbous")
+
+team_info=readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTiZfW7pSUWPttpHSMlAwgMyXwdAeLAW6HuoHwZa69FrNpfzqVkM_0DaeAveTG7hvbCSK-HBh31QxIM/pub?gid=95813594&single=true&output=csv")
+readr::write_csv(team_info,file = "example_data/07-pieplot/team_info.csv")

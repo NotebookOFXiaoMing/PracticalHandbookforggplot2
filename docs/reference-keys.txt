@@ -32,3 +32,7 @@ r语言ggplot2饼状图
 多层嵌套的饼状图
 一次性画很多个饼状图
 饼状图的两个实例
+r语言ggplot2热图
+pheatmap热图
+ggplot2热图
+ggplot2气泡热图图
