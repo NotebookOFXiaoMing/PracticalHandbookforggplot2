@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 9 R语言韦恩图 | R语言ggplot2科研数据可视化实用手册</title>
+  <meta name="description" content="Chapter 9 R语言韦恩图 | R语言ggplot2科研数据可视化实用手册" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 9 R语言韦恩图 | R语言ggplot2科研数据可视化实用手册" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 9 R语言韦恩图 | R语言ggplot2科研数据可视化实用手册" />
+  
+  
+  
+
+<meta name="author" content="闫明" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="r语言ggplot2热图.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">xiaoming</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> R语言、Rstudio、R包ggplot2安装 (win10)</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#r语言官网"><i class="fa fa-check"></i><b>1.1</b> R语言官网</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#rstudio官网"><i class="fa fa-check"></i><b>1.2</b> Rstudio官网</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="绘图数据准备.html"><a href="绘图数据准备.html"><i class="fa fa-check"></i><b>2</b> 绘图数据准备</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="绘图数据准备.html"><a href="绘图数据准备.html#文件的路径"><i class="fa fa-check"></i><b>2.1</b> 文件的路径</a></li>
+<li class="chapter" data-level="2.2" data-path="绘图数据准备.html"><a href="绘图数据准备.html#读取数据"><i class="fa fa-check"></i><b>2.2</b> 读取数据</a></li>
+<li class="chapter" data-level="2.3" data-path="绘图数据准备.html"><a href="绘图数据准备.html#读取数据集以后对数据集进行操作"><i class="fa fa-check"></i><b>2.3</b> 读取数据集以后对数据集进行操作</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="r语言ggplot2散点图.html"><a href="r语言ggplot2散点图.html"><i class="fa fa-check"></i><b>3</b> R语言ggplot2散点图</a></li>
+<li class="chapter" data-level="4" data-path="r语言ggplot2柱形图.html"><a href="r语言ggplot2柱形图.html"><i class="fa fa-check"></i><b>4</b> R语言ggplot2柱形图</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="r语言ggplot2柱形图.html"><a href="r语言ggplot2柱形图.html#最基本的柱形图需要准备的数据"><i class="fa fa-check"></i><b>4.1</b> 最基本的柱形图需要准备的数据</a></li>
+<li class="chapter" data-level="4.2" data-path="r语言ggplot2柱形图.html"><a href="r语言ggplot2柱形图.html#簇状柱形图"><i class="fa fa-check"></i><b>4.2</b> 簇状柱形图</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="r语言ggplot2柱形图.html"><a href="r语言ggplot2柱形图.html#接下来看每周一图里面的例子"><i class="fa fa-check"></i><b>4.2.1</b> 接下来看每周一图里面的例子</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="r语言ggplot2柱形图.html"><a href="r语言ggplot2柱形图.html#堆积柱形图"><i class="fa fa-check"></i><b>4.3</b> 堆积柱形图</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="r语言ggplot2柱形图.html"><a href="r语言ggplot2柱形图.html#实际例子"><i class="fa fa-check"></i><b>4.3.1</b> 实际例子</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="r语言ggplot2箱线图.html"><a href="r语言ggplot2箱线图.html"><i class="fa fa-check"></i><b>5</b> R语言ggplot2箱线图</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="r语言ggplot2箱线图.html"><a href="r语言ggplot2箱线图.html#首先是箱线图"><i class="fa fa-check"></i><b>5.1</b> 首先是箱线图</a></li>
+<li class="chapter" data-level="5.2" data-path="r语言ggplot2箱线图.html"><a href="r语言ggplot2箱线图.html#接下来是带有分组的箱线图"><i class="fa fa-check"></i><b>5.2</b> 接下来是带有分组的箱线图</a></li>
+<li class="chapter" data-level="5.3" data-path="r语言ggplot2箱线图.html"><a href="r语言ggplot2箱线图.html#接下来是小提琴图"><i class="fa fa-check"></i><b>5.3</b> 接下来是小提琴图</a></li>
+<li class="chapter" data-level="5.4" data-path="r语言ggplot2箱线图.html"><a href="r语言ggplot2箱线图.html#类似于箱线图小提琴图的还有"><i class="fa fa-check"></i><b>5.4</b> 类似于箱线图/小提琴图的还有</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="r语言ggplot2折线图.html"><a href="r语言ggplot2折线图.html"><i class="fa fa-check"></i><b>6</b> R语言ggplot2折线图</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="r语言ggplot2折线图.html"><a href="r语言ggplot2折线图.html#最基本的折线图"><i class="fa fa-check"></i><b>6.1</b> 最基本的折线图</a></li>
+<li class="chapter" data-level="6.2" data-path="r语言ggplot2折线图.html"><a href="r语言ggplot2折线图.html#分组的折线图"><i class="fa fa-check"></i><b>6.2</b> 分组的折线图</a></li>
+<li class="chapter" data-level="6.3" data-path="r语言ggplot2折线图.html"><a href="r语言ggplot2折线图.html#添加线段"><i class="fa fa-check"></i><b>6.3</b> 添加线段</a></li>
+<li class="chapter" data-level="6.4" data-path="r语言ggplot2折线图.html"><a href="r语言ggplot2折线图.html#添加辅助线"><i class="fa fa-check"></i><b>6.4</b> 添加辅助线</a></li>
+<li class="chapter" data-level="6.5" data-path="r语言ggplot2折线图.html"><a href="r语言ggplot2折线图.html#面积图"><i class="fa fa-check"></i><b>6.5</b> 面积图</a></li>
+<li class="chapter" data-level="6.6" data-path="r语言ggplot2折线图.html"><a href="r语言ggplot2折线图.html#实际例子-1"><i class="fa fa-check"></i><b>6.6</b> 实际例子</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html"><i class="fa fa-check"></i><b>7</b> R语言ggplot2饼状图</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html#最基本的饼状图"><i class="fa fa-check"></i><b>7.1</b> 最基本的饼状图</a></li>
+<li class="chapter" data-level="7.2" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html#中间空心的饼状图"><i class="fa fa-check"></i><b>7.2</b> 中间空心的饼状图</a></li>
+<li class="chapter" data-level="7.3" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html#其他效果的饼状图"><i class="fa fa-check"></i><b>7.3</b> 其他效果的饼状图</a></li>
+<li class="chapter" data-level="7.4" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html#其中某一块可以离开的饼图"><i class="fa fa-check"></i><b>7.4</b> 其中某一块可以离开的饼图</a></li>
+<li class="chapter" data-level="7.5" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html#多层嵌套的饼状图"><i class="fa fa-check"></i><b>7.5</b> 多层嵌套的饼状图</a></li>
+<li class="chapter" data-level="7.6" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html#一次性画很多个饼状图"><i class="fa fa-check"></i><b>7.6</b> 一次性画很多个饼状图</a></li>
+<li class="chapter" data-level="7.7" data-path="r语言ggplot2饼状图.html"><a href="r语言ggplot2饼状图.html#饼状图的两个实例"><i class="fa fa-check"></i><b>7.7</b> 饼状图的两个实例</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html"><i class="fa fa-check"></i><b>8</b> R语言ggplot2热图</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#pheatmap热图"><i class="fa fa-check"></i><b>8.1</b> pheatmap热图</a></li>
+<li class="chapter" data-level="8.2" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#ggplot2热图"><i class="fa fa-check"></i><b>8.2</b> ggplot2热图</a></li>
+<li class="chapter" data-level="8.3" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#ggplot2气泡热图图"><i class="fa fa-check"></i><b>8.3</b> ggplot2气泡热图图</a></li>
+<li class="chapter" data-level="8.4" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#一个完整的例子"><i class="fa fa-check"></i><b>8.4</b> 一个完整的例子</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="r语言韦恩图.html"><a href="r语言韦恩图.html"><i class="fa fa-check"></i><b>9</b> R语言韦恩图</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R语言ggplot2科研数据可视化实用手册</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="r语言韦恩图" class="section level1" number="9">
+<h1><span class="header-section-number">Chapter 9</span> R语言韦恩图</h1>
+<p>韦恩图主要用来展示不同组数据之间的交集</p>
+<p>R语言里画韦恩图的R包最常用的可能是VennDiagram,最多可以展示5组数据之间的交集，每组数据单独准备到一个文件里</p>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="r语言韦恩图.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb305-2"><a href="r语言韦恩图.html#cb305-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb305-3"><a href="r语言韦恩图.html#cb305-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
+<span id="cb305-4"><a href="r语言韦恩图.html#cb305-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
+<span id="cb305-5"><a href="r语言韦恩图.html#cb305-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
+<span id="cb305-6"><a href="r语言韦恩图.html#cb305-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<span id="cb305-7"><a href="r语言韦恩图.html#cb305-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb305-8"><a href="r语言韦恩图.html#cb305-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VennDiagram)</span>
+<span id="cb305-9"><a href="r语言韦恩图.html#cb305-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb305-10"><a href="r语言韦恩图.html#cb305-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb305-11"><a href="r语言韦恩图.html#cb305-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
+<span id="cb305-12"><a href="r语言韦恩图.html#cb305-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
+<span id="cb305-13"><a href="r语言韦恩图.html#cb305-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
+<span id="cb305-14"><a href="r语言韦恩图.html#cb305-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb305-15"><a href="r语言韦恩图.html#cb305-15" aria-hidden="true" tabindex="-1"></a><span class="fu">venn.diagram</span>(x,<span class="at">filename =</span> <span class="cn">NULL</span>) <span class="ot">-&gt;</span> p1</span>
+<span id="cb305-16"><a href="r语言韦恩图.html#cb305-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb305-17"><a href="r语言韦恩图.html#cb305-17" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.draw</span>(p1)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
+<p>有很多参数可以调节，这里介绍一下比较常用的</p>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="r语言韦恩图.html#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb306-2"><a href="r语言韦恩图.html#cb306-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-3"><a href="r语言韦恩图.html#cb306-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
+<span id="cb306-4"><a href="r语言韦恩图.html#cb306-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
+<span id="cb306-5"><a href="r语言韦恩图.html#cb306-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
+<span id="cb306-6"><a href="r语言韦恩图.html#cb306-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<span id="cb306-7"><a href="r语言韦恩图.html#cb306-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-8"><a href="r语言韦恩图.html#cb306-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VennDiagram)</span>
+<span id="cb306-9"><a href="r语言韦恩图.html#cb306-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-10"><a href="r语言韦恩图.html#cb306-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb306-11"><a href="r语言韦恩图.html#cb306-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
+<span id="cb306-12"><a href="r语言韦恩图.html#cb306-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
+<span id="cb306-13"><a href="r语言韦恩图.html#cb306-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
+<span id="cb306-14"><a href="r语言韦恩图.html#cb306-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-15"><a href="r语言韦恩图.html#cb306-15" aria-hidden="true" tabindex="-1"></a><span class="fu">venn.diagram</span>(x,</span>
+<span id="cb306-16"><a href="r语言韦恩图.html#cb306-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">filename =</span> <span class="cn">NULL</span>,</span>
+<span id="cb306-17"><a href="r语言韦恩图.html#cb306-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;ABC&quot;</span>,</span>
+<span id="cb306-18"><a href="r语言韦恩图.html#cb306-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">&quot;abc&quot;</span>,</span>
+<span id="cb306-19"><a href="r语言韦恩图.html#cb306-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;yellow&quot;</span>),</span>
+<span id="cb306-20"><a href="r语言韦恩图.html#cb306-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">col=</span><span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb306-21"><a href="r语言韦恩图.html#cb306-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">cat.cex=</span><span class="dv">3</span>) <span class="ot">-&gt;</span> p1</span>
+<span id="cb306-22"><a href="r语言韦恩图.html#cb306-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-23"><a href="r语言韦恩图.html#cb306-23" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.draw</span>(p1)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
+<p>ggplot2没有专门做venn图的函数，有人开发了ggplot2的扩展包用来画韦恩图</p>
+<p>ggvenn <a href="https://github.com/yanlinlin82/ggvenn" class="uri">https://github.com/yanlinlin82/ggvenn</a> 最多能画4组数据</p>
+<p>ggvenndiagram <a href="https://github.com/gaospecial/ggVennDiagram" class="uri">https://github.com/gaospecial/ggVennDiagram</a> 最多能画7组数据</p>
+<p>这里简单介绍一下ggvenn</p>
+<p>安装直接运行<code>install.packages("ggvenn")</code></p>
+<p>准备数据和VennDiagram的一眼</p>
+<p>作图代码</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="r语言韦恩图.html#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb307-2"><a href="r语言韦恩图.html#cb307-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-3"><a href="r语言韦恩图.html#cb307-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
+<span id="cb307-4"><a href="r语言韦恩图.html#cb307-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
+<span id="cb307-5"><a href="r语言韦恩图.html#cb307-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
+<span id="cb307-6"><a href="r语言韦恩图.html#cb307-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<span id="cb307-7"><a href="r语言韦恩图.html#cb307-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-8"><a href="r语言韦恩图.html#cb307-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-9"><a href="r语言韦恩图.html#cb307-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-10"><a href="r语言韦恩图.html#cb307-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb307-11"><a href="r语言韦恩图.html#cb307-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
+<span id="cb307-12"><a href="r语言韦恩图.html#cb307-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
+<span id="cb307-13"><a href="r语言韦恩图.html#cb307-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
+<span id="cb307-14"><a href="r语言韦恩图.html#cb307-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggvenn)</span>
+<span id="cb307-15"><a href="r语言韦恩图.html#cb307-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-16"><a href="r语言韦恩图.html#cb307-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(x)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="r语言韦恩图.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(x,</span>
+<span id="cb308-2"><a href="r语言韦恩图.html#cb308-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb308-3"><a href="r语言韦恩图.html#cb308-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill_alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb308-4"><a href="r语言韦恩图.html#cb308-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_color =</span> <span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb308-5"><a href="r语言韦恩图.html#cb308-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_alpha =</span> <span class="dv">1</span>,</span>
+<span id="cb308-6"><a href="r语言韦恩图.html#cb308-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_size =</span> <span class="dv">1</span>,</span>
+<span id="cb308-7"><a href="r语言韦恩图.html#cb308-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_linetype =</span> <span class="st">&quot;dashed&quot;</span>,</span>
+<span id="cb308-8"><a href="r语言韦恩图.html#cb308-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">set_name_color =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb308-9"><a href="r语言韦恩图.html#cb308-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">set_name_size =</span> <span class="dv">6</span>,</span>
+<span id="cb308-10"><a href="r语言韦恩图.html#cb308-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb308-11"><a href="r语言韦恩图.html#cb308-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_size =</span> <span class="dv">4</span>,</span>
+<span id="cb308-12"><a href="r语言韦恩图.html#cb308-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">label_sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-125-2.png" width="672" /></p>
+<p>VennDiagram 和 ggvenn 的每一个圈展示和每组数据集的多少并不是成比例的，比如第一组10个数据，第二组5个数据，第一组的圈应该比第二组的圈大</p>
+<p>如果想要成比例的话，可以使用R包eulerr</p>
+<p>这个整理数据集可能会复杂一些</p>
+<p>可以画5个以上的韦恩图</p>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="r语言韦恩图.html#cb309-1" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;First&quot;</span> <span class="ot">=</span> <span class="dv">25</span>, </span>
+<span id="cb309-2"><a href="r语言韦恩图.html#cb309-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Second&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
+<span id="cb309-3"><a href="r语言韦恩图.html#cb309-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Third&quot;</span> <span class="ot">=</span> <span class="dv">5</span>,</span>
+<span id="cb309-4"><a href="r语言韦恩图.html#cb309-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Second&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
+<span id="cb309-5"><a href="r语言韦恩图.html#cb309-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
+<span id="cb309-6"><a href="r语言韦恩图.html#cb309-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Second&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb309-7"><a href="r语言韦恩图.html#cb309-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Second&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)</span>
+<span id="cb309-8"><a href="r语言韦恩图.html#cb309-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb309-9"><a href="r语言韦恩图.html#cb309-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eulerr)</span>
+<span id="cb309-10"><a href="r语言韦恩图.html#cb309-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">euler</span>(dat),</span>
+<span id="cb309-11"><a href="r语言韦恩图.html#cb309-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">fills =</span> <span class="fu">list</span>(<span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb309-12"><a href="r语言韦恩图.html#cb309-12" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;green&quot;</span>,<span class="st">&quot;darkgreen&quot;</span>,</span>
+<span id="cb309-13"><a href="r语言韦恩图.html#cb309-13" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;white&quot;</span>,<span class="st">&quot;black&quot;</span>,</span>
+<span id="cb309-14"><a href="r语言韦恩图.html#cb309-14" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;purple&quot;</span>),</span>
+<span id="cb309-15"><a href="r语言韦恩图.html#cb309-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha=</span><span class="fl">0.5</span>),</span>
+<span id="cb309-16"><a href="r语言韦恩图.html#cb309-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">quantities =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">5</span>,<span class="dv">5</span>,</span>
+<span id="cb309-17"><a href="r语言韦恩图.html#cb309-17" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb309-18"><a href="r语言韦恩图.html#cb309-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">col=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb309-19"><a href="r语言韦恩图.html#cb309-19" aria-hidden="true" tabindex="-1"></a>                       <span class="at">cex=</span><span class="dv">4</span>),</span>
+<span id="cb309-20"><a href="r语言韦恩图.html#cb309-20" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;white&quot;</span>,<span class="at">font=</span><span class="dv">3</span>,<span class="at">cex=</span><span class="dv">2</span>),</span>
+<span id="cb309-21"><a href="r语言韦恩图.html#cb309-21" aria-hidden="true" tabindex="-1"></a>     <span class="at">edges =</span> <span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>,<span class="at">lwd=</span><span class="dv">5</span>,</span>
+<span id="cb309-22"><a href="r语言韦恩图.html#cb309-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
+<span id="cb309-23"><a href="r语言韦恩图.html#cb309-23" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">list</span>(<span class="at">label=</span><span class="fu">c</span>(<span class="st">&quot;XiaoMing&quot;</span>),<span class="at">cex=</span><span class="dv">5</span>),</span>
+<span id="cb309-24"><a href="r语言韦恩图.html#cb309-24" aria-hidden="true" tabindex="-1"></a>     <span class="at">legend =</span> <span class="fu">list</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>),</span>
+<span id="cb309-25"><a href="r语言韦恩图.html#cb309-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cex=</span><span class="dv">5</span>))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
+<p>韦恩图如果数据超过5组，还有一种展示方式如下，可以借助UpSetR包实现 <a href="https://github.com/hms-dbmi/UpSetR" class="uri">https://github.com/hms-dbmi/UpSetR</a></p>
+<p>输入数据和之前介绍的一眼</p>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="r语言韦恩图.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb310-2"><a href="r语言韦恩图.html#cb310-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-3"><a href="r语言韦恩图.html#cb310-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
+<span id="cb310-4"><a href="r语言韦恩图.html#cb310-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
+<span id="cb310-5"><a href="r语言韦恩图.html#cb310-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
+<span id="cb310-6"><a href="r语言韦恩图.html#cb310-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<span id="cb310-7"><a href="r语言韦恩图.html#cb310-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-8"><a href="r语言韦恩图.html#cb310-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-9"><a href="r语言韦恩图.html#cb310-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-10"><a href="r语言韦恩图.html#cb310-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb310-11"><a href="r语言韦恩图.html#cb310-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
+<span id="cb310-12"><a href="r语言韦恩图.html#cb310-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
+<span id="cb310-13"><a href="r语言韦恩图.html#cb310-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
+<span id="cb310-14"><a href="r语言韦恩图.html#cb310-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-15"><a href="r语言韦恩图.html#cb310-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)</span>
+<span id="cb310-16"><a href="r语言韦恩图.html#cb310-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-17"><a href="r语言韦恩图.html#cb310-17" aria-hidden="true" tabindex="-1"></a><span class="fu">upset</span>(<span class="fu">fromList</span>(x), </span>
+<span id="cb310-18"><a href="r语言韦恩图.html#cb310-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">order.by =</span> <span class="st">&quot;freq&quot;</span>,</span>
+<span id="cb310-19"><a href="r语言韦恩图.html#cb310-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">point.size =</span> <span class="fl">3.5</span>, </span>
+<span id="cb310-20"><a href="r语言韦恩图.html#cb310-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">line.size =</span> <span class="dv">2</span>,</span>
+<span id="cb310-21"><a href="r语言韦恩图.html#cb310-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">mainbar.y.label =</span> <span class="st">&quot;AAAA&quot;</span>,</span>
+<span id="cb310-22"><a href="r语言韦恩图.html#cb310-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">sets.x.label =</span> <span class="st">&quot;BBBB&quot;</span>,</span>
+<span id="cb310-23"><a href="r语言韦恩图.html#cb310-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">text.scale =</span> <span class="fu">c</span>(<span class="fl">1.3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="fl">0.75</span>),</span>
+<span id="cb310-24"><a href="r语言韦恩图.html#cb310-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">main.bar.color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<p>来自一篇NC论文的实际例子</p>
+<p><a href="https://github.com/PlantNutrition/Liyu" class="uri">https://github.com/PlantNutrition/Liyu</a></p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="r语言韦恩图.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)<span class="co">#R 3.5</span></span>
+<span id="cb311-2"><a href="r语言韦恩图.html#cb311-2" aria-hidden="true" tabindex="-1"></a>otu_RA <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">&#39;example_data/09-venndiagram/otu_RA.txt&#39;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
+<span id="cb311-3"><a href="r语言韦恩图.html#cb311-3" aria-hidden="true" tabindex="-1"></a>otu_RA[otu_RA <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb311-4"><a href="r语言韦恩图.html#cb311-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">upset</span>(otu_RA, </span>
+<span id="cb311-5"><a href="r语言韦恩图.html#cb311-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">nset =</span> <span class="dv">7</span>, </span>
+<span id="cb311-6"><a href="r语言韦恩图.html#cb311-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">nintersects =</span> <span class="dv">10</span>, </span>
+<span id="cb311-7"><a href="r语言韦恩图.html#cb311-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">order.by =</span> <span class="fu">c</span>(<span class="st">&#39;degree&#39;</span>,<span class="st">&#39;freq&#39;</span>),</span>
+<span id="cb311-8"><a href="r语言韦恩图.html#cb311-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">decreasing =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb311-9"><a href="r语言韦恩图.html#cb311-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">mb.ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.3</span>),</span>
+<span id="cb311-10"><a href="r语言韦恩图.html#cb311-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">point.size =</span> <span class="fl">1.8</span>,</span>
+<span id="cb311-11"><a href="r语言韦恩图.html#cb311-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">line.size =</span> <span class="dv">1</span>, </span>
+<span id="cb311-12"><a href="r语言韦恩图.html#cb311-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">mainbar.y.label =</span> <span class="st">&quot;Intersection size&quot;</span>, </span>
+<span id="cb311-13"><a href="r语言韦恩图.html#cb311-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">sets.x.label =</span> <span class="st">&quot;Set Size&quot;</span>, </span>
+<span id="cb311-14"><a href="r语言韦恩图.html#cb311-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.bar.color =</span> <span class="st">&quot;#2a83a2&quot;</span>, </span>
+<span id="cb311-15"><a href="r语言韦恩图.html#cb311-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">sets.bar.color =</span> <span class="st">&quot;#3b7960&quot;</span>,</span>
+<span id="cb311-16"><a href="r语言韦恩图.html#cb311-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">queries =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">query =</span> intersects, </span>
+<span id="cb311-17"><a href="r语言韦恩图.html#cb311-17" aria-hidden="true" tabindex="-1"></a>                                <span class="at">params =</span> <span class="fu">list</span>(<span class="st">&quot;BS&quot;</span>,<span class="st">&quot;RS&quot;</span>,<span class="st">&quot;RE&quot;</span>,<span class="st">&quot;VE&quot;</span>,<span class="st">&quot;SE&quot;</span>,<span class="st">&quot;LE&quot;</span>,<span class="st">&quot;P&quot;</span>), </span>
+<span id="cb311-18"><a href="r语言韦恩图.html#cb311-18" aria-hidden="true" tabindex="-1"></a>                                <span class="at">active =</span> T,</span>
+<span id="cb311-19"><a href="r语言韦恩图.html#cb311-19" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color=</span><span class="st">&quot;#d66a35&quot;</span>, </span>
+<span id="cb311-20"><a href="r语言韦恩图.html#cb311-20" aria-hidden="true" tabindex="-1"></a>                                <span class="at">query.name =</span> <span class="st">&quot;BS vs RS vs RE vs VE vs SE vs LE vs P&quot;</span>)))</span>
+<span id="cb311-21"><a href="r语言韦恩图.html#cb311-21" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="r语言ggplot2热图.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/NotebookOFXiaoMing/PracticalHandbookforggplot2/edit/master/09-wennplot.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/NotebookOFXiaoMing/PracticalHandbookforggplot2/blob/master/09-wennplot.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

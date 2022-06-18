@@ -46,3 +46,28 @@ dat %>%
 
 team_info=readr::read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTiZfW7pSUWPttpHSMlAwgMyXwdAeLAW6HuoHwZa69FrNpfzqVkM_0DaeAveTG7hvbCSK-HBh31QxIM/pub?gid=95813594&single=true&output=csv")
 readr::write_csv(team_info,file = "example_data/07-pieplot/team_info.csv")
+
+
+?pivot_longer
+?pivot_wider
+library(tidyverse)
+
+
+library(readxl)
+dat01<-read_excel("example_data/08-heatmap/01pheatmap_example.xlsx")
+head(dat01)
+library(tidyverse)
+
+dat01 %>% 
+  pivot_longer(-gene_name,names_to = "Sample",values_to = "expr_value") %>% 
+  rio::export(file = "example_data/08-heatmap/03_heatmap_example.xlsx")
+
+?geom_tile
+?scale_x_discrete
+?scale_fill_paletteer_c()
+dat01 %>% 
+  mutate(expr=sample(c("A","B"),60,replace = T)) %>% 
+  select(-expr_value) %>% 
+  rio::export(file = "example_data/08-heatmap/04_heatmap_example.xlsx")
+
+
