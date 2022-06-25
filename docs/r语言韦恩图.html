@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="r语言ggplot2热图.html"/>
-
+<link rel="next" href="r语言ggtree树状图.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -194,6 +194,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#一个完整的例子"><i class="fa fa-check"></i><b>8.4</b> 一个完整的例子</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="r语言韦恩图.html"><a href="r语言韦恩图.html"><i class="fa fa-check"></i><b>9</b> R语言韦恩图</a></li>
+<li class="chapter" data-level="10" data-path="r语言ggtree树状图.html"><a href="r语言ggtree树状图.html"><i class="fa fa-check"></i><b>10</b> R语言ggtree树状图</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r语言ggtree树状图.html"><a href="r语言ggtree树状图.html#进化树"><i class="fa fa-check"></i><b>10.1</b> 进化树</a></li>
+<li class="chapter" data-level="10.2" data-path="r语言ggtree树状图.html"><a href="r语言ggtree树状图.html#ggtreeextra添加额外注释信息"><i class="fa fa-check"></i><b>10.2</b> ggtreeExtra添加额外注释信息</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -217,56 +222,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">Chapter 9</span> R语言韦恩图</h1>
 <p>韦恩图主要用来展示不同组数据之间的交集</p>
 <p>R语言里画韦恩图的R包最常用的可能是VennDiagram,最多可以展示5组数据之间的交集，每组数据单独准备到一个文件里</p>
-<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="r语言韦恩图.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb305-2"><a href="r语言韦恩图.html#cb305-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb305-3"><a href="r语言韦恩图.html#cb305-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
-<span id="cb305-4"><a href="r语言韦恩图.html#cb305-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
-<span id="cb305-5"><a href="r语言韦恩图.html#cb305-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
-<span id="cb305-6"><a href="r语言韦恩图.html#cb305-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
-<span id="cb305-7"><a href="r语言韦恩图.html#cb305-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb305-8"><a href="r语言韦恩图.html#cb305-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VennDiagram)</span>
-<span id="cb305-9"><a href="r语言韦恩图.html#cb305-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb305-10"><a href="r语言韦恩图.html#cb305-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb305-11"><a href="r语言韦恩图.html#cb305-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
-<span id="cb305-12"><a href="r语言韦恩图.html#cb305-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
-<span id="cb305-13"><a href="r语言韦恩图.html#cb305-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
-<span id="cb305-14"><a href="r语言韦恩图.html#cb305-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb305-15"><a href="r语言韦恩图.html#cb305-15" aria-hidden="true" tabindex="-1"></a><span class="fu">venn.diagram</span>(x,<span class="at">filename =</span> <span class="cn">NULL</span>) <span class="ot">-&gt;</span> p1</span>
-<span id="cb305-16"><a href="r语言韦恩图.html#cb305-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb305-17"><a href="r语言韦恩图.html#cb305-17" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.draw</span>(p1)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
-<p>有很多参数可以调节，这里介绍一下比较常用的</p>
-<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="r语言韦恩图.html#cb306-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb306-2"><a href="r语言韦恩图.html#cb306-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb306-3"><a href="r语言韦恩图.html#cb306-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
-<span id="cb306-4"><a href="r语言韦恩图.html#cb306-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
-<span id="cb306-5"><a href="r语言韦恩图.html#cb306-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
-<span id="cb306-6"><a href="r语言韦恩图.html#cb306-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="r语言韦恩图.html#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb301-2"><a href="r语言韦恩图.html#cb301-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb301-3"><a href="r语言韦恩图.html#cb301-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
+<span id="cb301-4"><a href="r语言韦恩图.html#cb301-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
+<span id="cb301-5"><a href="r语言韦恩图.html#cb301-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
+<span id="cb301-6"><a href="r语言韦恩图.html#cb301-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<span id="cb301-7"><a href="r语言韦恩图.html#cb301-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb301-8"><a href="r语言韦恩图.html#cb301-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VennDiagram)</span></code></pre></div>
+<pre><code>## Loading required package: grid</code></pre>
+<pre><code>## Loading required package: futile.logger</code></pre>
+<pre><code>## 
+## Attaching package: &#39;VennDiagram&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggtree&#39;:
+## 
+##     rotate</code></pre>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="r语言韦恩图.html#cb306-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb306-2"><a href="r语言韦恩图.html#cb306-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
+<span id="cb306-3"><a href="r语言韦恩图.html#cb306-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
+<span id="cb306-4"><a href="r语言韦恩图.html#cb306-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
+<span id="cb306-5"><a href="r语言韦恩图.html#cb306-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-6"><a href="r语言韦恩图.html#cb306-6" aria-hidden="true" tabindex="-1"></a><span class="fu">venn.diagram</span>(x,<span class="at">filename =</span> <span class="cn">NULL</span>) <span class="ot">-&gt;</span> p1</span>
 <span id="cb306-7"><a href="r语言韦恩图.html#cb306-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb306-8"><a href="r语言韦恩图.html#cb306-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VennDiagram)</span>
-<span id="cb306-9"><a href="r语言韦恩图.html#cb306-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb306-10"><a href="r语言韦恩图.html#cb306-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb306-11"><a href="r语言韦恩图.html#cb306-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
-<span id="cb306-12"><a href="r语言韦恩图.html#cb306-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
-<span id="cb306-13"><a href="r语言韦恩图.html#cb306-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
-<span id="cb306-14"><a href="r语言韦恩图.html#cb306-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb306-15"><a href="r语言韦恩图.html#cb306-15" aria-hidden="true" tabindex="-1"></a><span class="fu">venn.diagram</span>(x,</span>
-<span id="cb306-16"><a href="r语言韦恩图.html#cb306-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">filename =</span> <span class="cn">NULL</span>,</span>
-<span id="cb306-17"><a href="r语言韦恩图.html#cb306-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;ABC&quot;</span>,</span>
-<span id="cb306-18"><a href="r语言韦恩图.html#cb306-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">&quot;abc&quot;</span>,</span>
-<span id="cb306-19"><a href="r语言韦恩图.html#cb306-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;yellow&quot;</span>),</span>
-<span id="cb306-20"><a href="r语言韦恩图.html#cb306-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">col=</span><span class="st">&quot;grey&quot;</span>,</span>
-<span id="cb306-21"><a href="r语言韦恩图.html#cb306-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">cat.cex=</span><span class="dv">3</span>) <span class="ot">-&gt;</span> p1</span>
-<span id="cb306-22"><a href="r语言韦恩图.html#cb306-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb306-23"><a href="r语言韦恩图.html#cb306-23" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.draw</span>(p1)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
-<p>ggplot2没有专门做venn图的函数，有人开发了ggplot2的扩展包用来画韦恩图</p>
-<p>ggvenn <a href="https://github.com/yanlinlin82/ggvenn" class="uri">https://github.com/yanlinlin82/ggvenn</a> 最多能画4组数据</p>
-<p>ggvenndiagram <a href="https://github.com/gaospecial/ggVennDiagram" class="uri">https://github.com/gaospecial/ggVennDiagram</a> 最多能画7组数据</p>
-<p>这里简单介绍一下ggvenn</p>
-<p>安装直接运行<code>install.packages("ggvenn")</code></p>
-<p>准备数据和VennDiagram的一眼</p>
-<p>作图代码</p>
+<span id="cb306-8"><a href="r语言韦恩图.html#cb306-8" aria-hidden="true" tabindex="-1"></a>grid<span class="sc">::</span><span class="fu">grid.draw</span>(p1)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
+<p>有很多参数可以调节，这里介绍一下比较常用的</p>
 <div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="r语言韦恩图.html#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb307-2"><a href="r语言韦恩图.html#cb307-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb307-3"><a href="r语言韦恩图.html#cb307-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
@@ -274,110 +254,142 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb307-5"><a href="r语言韦恩图.html#cb307-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
 <span id="cb307-6"><a href="r语言韦恩图.html#cb307-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
 <span id="cb307-7"><a href="r语言韦恩图.html#cb307-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb307-8"><a href="r语言韦恩图.html#cb307-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-8"><a href="r语言韦恩图.html#cb307-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(VennDiagram)</span>
 <span id="cb307-9"><a href="r语言韦恩图.html#cb307-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb307-10"><a href="r语言韦恩图.html#cb307-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
 <span id="cb307-11"><a href="r语言韦恩图.html#cb307-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
 <span id="cb307-12"><a href="r语言韦恩图.html#cb307-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
 <span id="cb307-13"><a href="r语言韦恩图.html#cb307-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
-<span id="cb307-14"><a href="r语言韦恩图.html#cb307-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggvenn)</span>
-<span id="cb307-15"><a href="r语言韦恩图.html#cb307-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb307-16"><a href="r语言韦恩图.html#cb307-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(x)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
-<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="r语言韦恩图.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(x,</span>
-<span id="cb308-2"><a href="r语言韦恩图.html#cb308-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
-<span id="cb308-3"><a href="r语言韦恩图.html#cb308-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill_alpha =</span> <span class="fl">0.5</span>,</span>
-<span id="cb308-4"><a href="r语言韦恩图.html#cb308-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_color =</span> <span class="st">&quot;grey&quot;</span>,</span>
-<span id="cb308-5"><a href="r语言韦恩图.html#cb308-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_alpha =</span> <span class="dv">1</span>,</span>
-<span id="cb308-6"><a href="r语言韦恩图.html#cb308-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_size =</span> <span class="dv">1</span>,</span>
-<span id="cb308-7"><a href="r语言韦恩图.html#cb308-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_linetype =</span> <span class="st">&quot;dashed&quot;</span>,</span>
-<span id="cb308-8"><a href="r语言韦恩图.html#cb308-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">set_name_color =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb308-9"><a href="r语言韦恩图.html#cb308-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">set_name_size =</span> <span class="dv">6</span>,</span>
-<span id="cb308-10"><a href="r语言韦恩图.html#cb308-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_color =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb308-11"><a href="r语言韦恩图.html#cb308-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_size =</span> <span class="dv">4</span>,</span>
-<span id="cb308-12"><a href="r语言韦恩图.html#cb308-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">label_sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-125-2.png" width="672" /></p>
+<span id="cb307-14"><a href="r语言韦恩图.html#cb307-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-15"><a href="r语言韦恩图.html#cb307-15" aria-hidden="true" tabindex="-1"></a><span class="fu">venn.diagram</span>(x,</span>
+<span id="cb307-16"><a href="r语言韦恩图.html#cb307-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">filename =</span> <span class="cn">NULL</span>,</span>
+<span id="cb307-17"><a href="r语言韦恩图.html#cb307-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&quot;ABC&quot;</span>,</span>
+<span id="cb307-18"><a href="r语言韦恩图.html#cb307-18" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">&quot;abc&quot;</span>,</span>
+<span id="cb307-19"><a href="r语言韦恩图.html#cb307-19" aria-hidden="true" tabindex="-1"></a>             <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;green&quot;</span>,<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;yellow&quot;</span>),</span>
+<span id="cb307-20"><a href="r语言韦恩图.html#cb307-20" aria-hidden="true" tabindex="-1"></a>             <span class="at">col=</span><span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb307-21"><a href="r语言韦恩图.html#cb307-21" aria-hidden="true" tabindex="-1"></a>             <span class="at">cat.cex=</span><span class="dv">3</span>) <span class="ot">-&gt;</span> p1</span>
+<span id="cb307-22"><a href="r语言韦恩图.html#cb307-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-23"><a href="r语言韦恩图.html#cb307-23" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.draw</span>(p1)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-231-1.png" width="672" /></p>
+<p>ggplot2没有专门做venn图的函数，有人开发了ggplot2的扩展包用来画韦恩图</p>
+<p>ggvenn <a href="https://github.com/yanlinlin82/ggvenn" class="uri">https://github.com/yanlinlin82/ggvenn</a> 最多能画4组数据</p>
+<p>ggvenndiagram <a href="https://github.com/gaospecial/ggVennDiagram" class="uri">https://github.com/gaospecial/ggVennDiagram</a> 最多能画7组数据</p>
+<p>这里简单介绍一下ggvenn</p>
+<p>安装直接运行<code>install.packages("ggvenn")</code></p>
+<p>准备数据和VennDiagram的一眼</p>
+<p>作图代码</p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="r语言韦恩图.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb308-2"><a href="r语言韦恩图.html#cb308-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-3"><a href="r语言韦恩图.html#cb308-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
+<span id="cb308-4"><a href="r语言韦恩图.html#cb308-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
+<span id="cb308-5"><a href="r语言韦恩图.html#cb308-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
+<span id="cb308-6"><a href="r语言韦恩图.html#cb308-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<span id="cb308-7"><a href="r语言韦恩图.html#cb308-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-8"><a href="r语言韦恩图.html#cb308-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-9"><a href="r语言韦恩图.html#cb308-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-10"><a href="r语言韦恩图.html#cb308-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb308-11"><a href="r语言韦恩图.html#cb308-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
+<span id="cb308-12"><a href="r语言韦恩图.html#cb308-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
+<span id="cb308-13"><a href="r语言韦恩图.html#cb308-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
+<span id="cb308-14"><a href="r语言韦恩图.html#cb308-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggvenn)</span></code></pre></div>
+<pre><code>## Warning: package &#39;ggvenn&#39; was built under R version 4.0.5</code></pre>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="r语言韦恩图.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(x)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-232-1.png" width="672" /></p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="r语言韦恩图.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggvenn</span>(x,</span>
+<span id="cb311-2"><a href="r语言韦恩图.html#cb311-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill_color =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb311-3"><a href="r语言韦恩图.html#cb311-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fill_alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb311-4"><a href="r语言韦恩图.html#cb311-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_color =</span> <span class="st">&quot;grey&quot;</span>,</span>
+<span id="cb311-5"><a href="r语言韦恩图.html#cb311-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_alpha =</span> <span class="dv">1</span>,</span>
+<span id="cb311-6"><a href="r语言韦恩图.html#cb311-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_size =</span> <span class="dv">1</span>,</span>
+<span id="cb311-7"><a href="r语言韦恩图.html#cb311-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">stroke_linetype =</span> <span class="st">&quot;dashed&quot;</span>,</span>
+<span id="cb311-8"><a href="r语言韦恩图.html#cb311-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">set_name_color =</span> <span class="st">&quot;red&quot;</span>,</span>
+<span id="cb311-9"><a href="r语言韦恩图.html#cb311-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">set_name_size =</span> <span class="dv">6</span>,</span>
+<span id="cb311-10"><a href="r语言韦恩图.html#cb311-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb311-11"><a href="r语言韦恩图.html#cb311-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">text_size =</span> <span class="dv">4</span>,</span>
+<span id="cb311-12"><a href="r语言韦恩图.html#cb311-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">label_sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-232-2.png" width="672" /></p>
 <p>VennDiagram 和 ggvenn 的每一个圈展示和每组数据集的多少并不是成比例的，比如第一组10个数据，第二组5个数据，第一组的圈应该比第二组的圈大</p>
 <p>如果想要成比例的话，可以使用R包eulerr</p>
 <p>这个整理数据集可能会复杂一些</p>
 <p>可以画5个以上的韦恩图</p>
-<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="r语言韦恩图.html#cb309-1" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;First&quot;</span> <span class="ot">=</span> <span class="dv">25</span>, </span>
-<span id="cb309-2"><a href="r语言韦恩图.html#cb309-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Second&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
-<span id="cb309-3"><a href="r语言韦恩图.html#cb309-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Third&quot;</span> <span class="ot">=</span> <span class="dv">5</span>,</span>
-<span id="cb309-4"><a href="r语言韦恩图.html#cb309-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Second&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
-<span id="cb309-5"><a href="r语言韦恩图.html#cb309-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
-<span id="cb309-6"><a href="r语言韦恩图.html#cb309-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Second&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
-<span id="cb309-7"><a href="r语言韦恩图.html#cb309-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Second&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)</span>
-<span id="cb309-8"><a href="r语言韦恩图.html#cb309-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb309-9"><a href="r语言韦恩图.html#cb309-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eulerr)</span>
-<span id="cb309-10"><a href="r语言韦恩图.html#cb309-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">euler</span>(dat),</span>
-<span id="cb309-11"><a href="r语言韦恩图.html#cb309-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">fills =</span> <span class="fu">list</span>(<span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb309-12"><a href="r语言韦恩图.html#cb309-12" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;green&quot;</span>,<span class="st">&quot;darkgreen&quot;</span>,</span>
-<span id="cb309-13"><a href="r语言韦恩图.html#cb309-13" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;white&quot;</span>,<span class="st">&quot;black&quot;</span>,</span>
-<span id="cb309-14"><a href="r语言韦恩图.html#cb309-14" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;purple&quot;</span>),</span>
-<span id="cb309-15"><a href="r语言韦恩图.html#cb309-15" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha=</span><span class="fl">0.5</span>),</span>
-<span id="cb309-16"><a href="r语言韦恩图.html#cb309-16" aria-hidden="true" tabindex="-1"></a>     <span class="at">quantities =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">5</span>,<span class="dv">5</span>,</span>
-<span id="cb309-17"><a href="r语言韦恩图.html#cb309-17" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
-<span id="cb309-18"><a href="r语言韦恩图.html#cb309-18" aria-hidden="true" tabindex="-1"></a>                       <span class="at">col=</span><span class="st">&quot;black&quot;</span>,</span>
-<span id="cb309-19"><a href="r语言韦恩图.html#cb309-19" aria-hidden="true" tabindex="-1"></a>                       <span class="at">cex=</span><span class="dv">4</span>),</span>
-<span id="cb309-20"><a href="r语言韦恩图.html#cb309-20" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;white&quot;</span>,<span class="at">font=</span><span class="dv">3</span>,<span class="at">cex=</span><span class="dv">2</span>),</span>
-<span id="cb309-21"><a href="r语言韦恩图.html#cb309-21" aria-hidden="true" tabindex="-1"></a>     <span class="at">edges =</span> <span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>,<span class="at">lwd=</span><span class="dv">5</span>,</span>
-<span id="cb309-22"><a href="r语言韦恩图.html#cb309-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
-<span id="cb309-23"><a href="r语言韦恩图.html#cb309-23" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">list</span>(<span class="at">label=</span><span class="fu">c</span>(<span class="st">&quot;XiaoMing&quot;</span>),<span class="at">cex=</span><span class="dv">5</span>),</span>
-<span id="cb309-24"><a href="r语言韦恩图.html#cb309-24" aria-hidden="true" tabindex="-1"></a>     <span class="at">legend =</span> <span class="fu">list</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>),</span>
-<span id="cb309-25"><a href="r语言韦恩图.html#cb309-25" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cex=</span><span class="dv">5</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="r语言韦恩图.html#cb312-1" aria-hidden="true" tabindex="-1"></a>dat<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;First&quot;</span> <span class="ot">=</span> <span class="dv">25</span>, </span>
+<span id="cb312-2"><a href="r语言韦恩图.html#cb312-2" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Second&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
+<span id="cb312-3"><a href="r语言韦恩图.html#cb312-3" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Third&quot;</span> <span class="ot">=</span> <span class="dv">5</span>,</span>
+<span id="cb312-4"><a href="r语言韦恩图.html#cb312-4" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Second&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
+<span id="cb312-5"><a href="r语言韦恩图.html#cb312-5" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">5</span>, </span>
+<span id="cb312-6"><a href="r语言韦恩图.html#cb312-6" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;Second&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb312-7"><a href="r语言韦恩图.html#cb312-7" aria-hidden="true" tabindex="-1"></a>       <span class="st">&quot;First&amp;Second&amp;Third&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)</span>
+<span id="cb312-8"><a href="r语言韦恩图.html#cb312-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb312-9"><a href="r语言韦恩图.html#cb312-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eulerr)</span></code></pre></div>
+<pre><code>## Warning: package &#39;eulerr&#39; was built under R version 4.0.5</code></pre>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="r语言韦恩图.html#cb314-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">euler</span>(dat),</span>
+<span id="cb314-2"><a href="r语言韦恩图.html#cb314-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">fills =</span> <span class="fu">list</span>(<span class="at">fill=</span><span class="fu">c</span>(<span class="st">&quot;red&quot;</span>,<span class="st">&quot;blue&quot;</span>,</span>
+<span id="cb314-3"><a href="r语言韦恩图.html#cb314-3" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;green&quot;</span>,<span class="st">&quot;darkgreen&quot;</span>,</span>
+<span id="cb314-4"><a href="r语言韦恩图.html#cb314-4" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;white&quot;</span>,<span class="st">&quot;black&quot;</span>,</span>
+<span id="cb314-5"><a href="r语言韦恩图.html#cb314-5" aria-hidden="true" tabindex="-1"></a>                         <span class="st">&quot;purple&quot;</span>),</span>
+<span id="cb314-6"><a href="r语言韦恩图.html#cb314-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha=</span><span class="fl">0.5</span>),</span>
+<span id="cb314-7"><a href="r语言韦恩图.html#cb314-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">quantities =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">5</span>,<span class="dv">5</span>,</span>
+<span id="cb314-8"><a href="r语言韦恩图.html#cb314-8" aria-hidden="true" tabindex="-1"></a>                         <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>),</span>
+<span id="cb314-9"><a href="r语言韦恩图.html#cb314-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">col=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb314-10"><a href="r语言韦恩图.html#cb314-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">cex=</span><span class="dv">4</span>),</span>
+<span id="cb314-11"><a href="r语言韦恩图.html#cb314-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;white&quot;</span>,<span class="at">font=</span><span class="dv">3</span>,<span class="at">cex=</span><span class="dv">2</span>),</span>
+<span id="cb314-12"><a href="r语言韦恩图.html#cb314-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">edges =</span> <span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;darkgreen&quot;</span>,<span class="at">lwd=</span><span class="dv">5</span>,</span>
+<span id="cb314-13"><a href="r语言韦恩图.html#cb314-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">lty=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),</span>
+<span id="cb314-14"><a href="r语言韦恩图.html#cb314-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">list</span>(<span class="at">label=</span><span class="fu">c</span>(<span class="st">&quot;XiaoMing&quot;</span>),<span class="at">cex=</span><span class="dv">5</span>),</span>
+<span id="cb314-15"><a href="r语言韦恩图.html#cb314-15" aria-hidden="true" tabindex="-1"></a>     <span class="at">legend =</span> <span class="fu">list</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>),</span>
+<span id="cb314-16"><a href="r语言韦恩图.html#cb314-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cex=</span><span class="dv">5</span>))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
 <p>韦恩图如果数据超过5组，还有一种展示方式如下，可以借助UpSetR包实现 <a href="https://github.com/hms-dbmi/UpSetR" class="uri">https://github.com/hms-dbmi/UpSetR</a></p>
 <p>输入数据和之前介绍的一眼</p>
-<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="r语言韦恩图.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb310-2"><a href="r语言韦恩图.html#cb310-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-3"><a href="r语言韦恩图.html#cb310-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
-<span id="cb310-4"><a href="r语言韦恩图.html#cb310-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
-<span id="cb310-5"><a href="r语言韦恩图.html#cb310-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
-<span id="cb310-6"><a href="r语言韦恩图.html#cb310-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
-<span id="cb310-7"><a href="r语言韦恩图.html#cb310-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-8"><a href="r语言韦恩图.html#cb310-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-9"><a href="r语言韦恩图.html#cb310-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-10"><a href="r语言韦恩图.html#cb310-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb310-11"><a href="r语言韦恩图.html#cb310-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
-<span id="cb310-12"><a href="r语言韦恩图.html#cb310-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
-<span id="cb310-13"><a href="r语言韦恩图.html#cb310-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
-<span id="cb310-14"><a href="r语言韦恩图.html#cb310-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-15"><a href="r语言韦恩图.html#cb310-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)</span>
-<span id="cb310-16"><a href="r语言韦恩图.html#cb310-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb310-17"><a href="r语言韦恩图.html#cb310-17" aria-hidden="true" tabindex="-1"></a><span class="fu">upset</span>(<span class="fu">fromList</span>(x), </span>
-<span id="cb310-18"><a href="r语言韦恩图.html#cb310-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">order.by =</span> <span class="st">&quot;freq&quot;</span>,</span>
-<span id="cb310-19"><a href="r语言韦恩图.html#cb310-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">point.size =</span> <span class="fl">3.5</span>, </span>
-<span id="cb310-20"><a href="r语言韦恩图.html#cb310-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">line.size =</span> <span class="dv">2</span>,</span>
-<span id="cb310-21"><a href="r语言韦恩图.html#cb310-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">mainbar.y.label =</span> <span class="st">&quot;AAAA&quot;</span>,</span>
-<span id="cb310-22"><a href="r语言韦恩图.html#cb310-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">sets.x.label =</span> <span class="st">&quot;BBBB&quot;</span>,</span>
-<span id="cb310-23"><a href="r语言韦恩图.html#cb310-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">text.scale =</span> <span class="fu">c</span>(<span class="fl">1.3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="fl">0.75</span>),</span>
-<span id="cb310-24"><a href="r语言韦恩图.html#cb310-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">main.bar.color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="r语言韦恩图.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb315-2"><a href="r语言韦恩图.html#cb315-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb315-3"><a href="r语言韦恩图.html#cb315-3" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat01.xlsx&quot;</span>)</span>
+<span id="cb315-4"><a href="r语言韦恩图.html#cb315-4" aria-hidden="true" tabindex="-1"></a>dat02<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat02.xlsx&quot;</span>)</span>
+<span id="cb315-5"><a href="r语言韦恩图.html#cb315-5" aria-hidden="true" tabindex="-1"></a>dat03<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat03.xlsx&quot;</span>)</span>
+<span id="cb315-6"><a href="r语言韦恩图.html#cb315-6" aria-hidden="true" tabindex="-1"></a>dat04<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/09-venndiagram/dat04.xlsx&quot;</span>)</span>
+<span id="cb315-7"><a href="r语言韦恩图.html#cb315-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb315-8"><a href="r语言韦恩图.html#cb315-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb315-9"><a href="r语言韦恩图.html#cb315-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb315-10"><a href="r语言韦恩图.html#cb315-10" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">group1=</span>dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb315-11"><a href="r语言韦恩图.html#cb315-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">group2=</span>dat02<span class="sc">$</span>gene_name,</span>
+<span id="cb315-12"><a href="r语言韦恩图.html#cb315-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">group3=</span>dat03<span class="sc">$</span>gene_name,</span>
+<span id="cb315-13"><a href="r语言韦恩图.html#cb315-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">group4=</span>dat04<span class="sc">$</span>gene_name)</span>
+<span id="cb315-14"><a href="r语言韦恩图.html#cb315-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb315-15"><a href="r语言韦恩图.html#cb315-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)</span></code></pre></div>
+<pre><code>## Warning: package &#39;UpSetR&#39; was built under R version 4.0.5</code></pre>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="r语言韦恩图.html#cb317-1" aria-hidden="true" tabindex="-1"></a><span class="fu">upset</span>(<span class="fu">fromList</span>(x), </span>
+<span id="cb317-2"><a href="r语言韦恩图.html#cb317-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">order.by =</span> <span class="st">&quot;freq&quot;</span>,</span>
+<span id="cb317-3"><a href="r语言韦恩图.html#cb317-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">point.size =</span> <span class="fl">3.5</span>, </span>
+<span id="cb317-4"><a href="r语言韦恩图.html#cb317-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">line.size =</span> <span class="dv">2</span>,</span>
+<span id="cb317-5"><a href="r语言韦恩图.html#cb317-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">mainbar.y.label =</span> <span class="st">&quot;AAAA&quot;</span>,</span>
+<span id="cb317-6"><a href="r语言韦恩图.html#cb317-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">sets.x.label =</span> <span class="st">&quot;BBBB&quot;</span>,</span>
+<span id="cb317-7"><a href="r语言韦恩图.html#cb317-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">text.scale =</span> <span class="fu">c</span>(<span class="fl">1.3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="fl">0.75</span>),</span>
+<span id="cb317-8"><a href="r语言韦恩图.html#cb317-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">main.bar.color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
 <p>来自一篇NC论文的实际例子</p>
 <p><a href="https://github.com/PlantNutrition/Liyu" class="uri">https://github.com/PlantNutrition/Liyu</a></p>
-<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="r语言韦恩图.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)<span class="co">#R 3.5</span></span>
-<span id="cb311-2"><a href="r语言韦恩图.html#cb311-2" aria-hidden="true" tabindex="-1"></a>otu_RA <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">&#39;example_data/09-venndiagram/otu_RA.txt&#39;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
-<span id="cb311-3"><a href="r语言韦恩图.html#cb311-3" aria-hidden="true" tabindex="-1"></a>otu_RA[otu_RA <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb311-4"><a href="r语言韦恩图.html#cb311-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">upset</span>(otu_RA, </span>
-<span id="cb311-5"><a href="r语言韦恩图.html#cb311-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">nset =</span> <span class="dv">7</span>, </span>
-<span id="cb311-6"><a href="r语言韦恩图.html#cb311-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">nintersects =</span> <span class="dv">10</span>, </span>
-<span id="cb311-7"><a href="r语言韦恩图.html#cb311-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">order.by =</span> <span class="fu">c</span>(<span class="st">&#39;degree&#39;</span>,<span class="st">&#39;freq&#39;</span>),</span>
-<span id="cb311-8"><a href="r语言韦恩图.html#cb311-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">decreasing =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>),</span>
-<span id="cb311-9"><a href="r语言韦恩图.html#cb311-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">mb.ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.3</span>),</span>
-<span id="cb311-10"><a href="r语言韦恩图.html#cb311-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">point.size =</span> <span class="fl">1.8</span>,</span>
-<span id="cb311-11"><a href="r语言韦恩图.html#cb311-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">line.size =</span> <span class="dv">1</span>, </span>
-<span id="cb311-12"><a href="r语言韦恩图.html#cb311-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">mainbar.y.label =</span> <span class="st">&quot;Intersection size&quot;</span>, </span>
-<span id="cb311-13"><a href="r语言韦恩图.html#cb311-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">sets.x.label =</span> <span class="st">&quot;Set Size&quot;</span>, </span>
-<span id="cb311-14"><a href="r语言韦恩图.html#cb311-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.bar.color =</span> <span class="st">&quot;#2a83a2&quot;</span>, </span>
-<span id="cb311-15"><a href="r语言韦恩图.html#cb311-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">sets.bar.color =</span> <span class="st">&quot;#3b7960&quot;</span>,</span>
-<span id="cb311-16"><a href="r语言韦恩图.html#cb311-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">queries =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">query =</span> intersects, </span>
-<span id="cb311-17"><a href="r语言韦恩图.html#cb311-17" aria-hidden="true" tabindex="-1"></a>                                <span class="at">params =</span> <span class="fu">list</span>(<span class="st">&quot;BS&quot;</span>,<span class="st">&quot;RS&quot;</span>,<span class="st">&quot;RE&quot;</span>,<span class="st">&quot;VE&quot;</span>,<span class="st">&quot;SE&quot;</span>,<span class="st">&quot;LE&quot;</span>,<span class="st">&quot;P&quot;</span>), </span>
-<span id="cb311-18"><a href="r语言韦恩图.html#cb311-18" aria-hidden="true" tabindex="-1"></a>                                <span class="at">active =</span> T,</span>
-<span id="cb311-19"><a href="r语言韦恩图.html#cb311-19" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color=</span><span class="st">&quot;#d66a35&quot;</span>, </span>
-<span id="cb311-20"><a href="r语言韦恩图.html#cb311-20" aria-hidden="true" tabindex="-1"></a>                                <span class="at">query.name =</span> <span class="st">&quot;BS vs RS vs RE vs VE vs SE vs LE vs P&quot;</span>)))</span>
-<span id="cb311-21"><a href="r语言韦恩图.html#cb311-21" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="r语言韦恩图.html#cb318-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)<span class="co">#R 3.5</span></span>
+<span id="cb318-2"><a href="r语言韦恩图.html#cb318-2" aria-hidden="true" tabindex="-1"></a>otu_RA <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">&#39;example_data/09-venndiagram/otu_RA.txt&#39;</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">row.names =</span> <span class="dv">1</span>, <span class="at">sep =</span> <span class="st">&#39;</span><span class="sc">\t</span><span class="st">&#39;</span>)</span>
+<span id="cb318-3"><a href="r语言韦恩图.html#cb318-3" aria-hidden="true" tabindex="-1"></a>otu_RA[otu_RA <span class="sc">&gt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb318-4"><a href="r语言韦恩图.html#cb318-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">upset</span>(otu_RA, </span>
+<span id="cb318-5"><a href="r语言韦恩图.html#cb318-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">nset =</span> <span class="dv">7</span>, </span>
+<span id="cb318-6"><a href="r语言韦恩图.html#cb318-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">nintersects =</span> <span class="dv">10</span>, </span>
+<span id="cb318-7"><a href="r语言韦恩图.html#cb318-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">order.by =</span> <span class="fu">c</span>(<span class="st">&#39;degree&#39;</span>,<span class="st">&#39;freq&#39;</span>),</span>
+<span id="cb318-8"><a href="r语言韦恩图.html#cb318-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">decreasing =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>),</span>
+<span id="cb318-9"><a href="r语言韦恩图.html#cb318-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">mb.ratio =</span> <span class="fu">c</span>(<span class="fl">0.7</span>, <span class="fl">0.3</span>),</span>
+<span id="cb318-10"><a href="r语言韦恩图.html#cb318-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">point.size =</span> <span class="fl">1.8</span>,</span>
+<span id="cb318-11"><a href="r语言韦恩图.html#cb318-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">line.size =</span> <span class="dv">1</span>, </span>
+<span id="cb318-12"><a href="r语言韦恩图.html#cb318-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">mainbar.y.label =</span> <span class="st">&quot;Intersection size&quot;</span>, </span>
+<span id="cb318-13"><a href="r语言韦恩图.html#cb318-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">sets.x.label =</span> <span class="st">&quot;Set Size&quot;</span>, </span>
+<span id="cb318-14"><a href="r语言韦恩图.html#cb318-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">main.bar.color =</span> <span class="st">&quot;#2a83a2&quot;</span>, </span>
+<span id="cb318-15"><a href="r语言韦恩图.html#cb318-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">sets.bar.color =</span> <span class="st">&quot;#3b7960&quot;</span>,</span>
+<span id="cb318-16"><a href="r语言韦恩图.html#cb318-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">queries =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="at">query =</span> intersects, </span>
+<span id="cb318-17"><a href="r语言韦恩图.html#cb318-17" aria-hidden="true" tabindex="-1"></a>                                <span class="at">params =</span> <span class="fu">list</span>(<span class="st">&quot;BS&quot;</span>,<span class="st">&quot;RS&quot;</span>,<span class="st">&quot;RE&quot;</span>,<span class="st">&quot;VE&quot;</span>,<span class="st">&quot;SE&quot;</span>,<span class="st">&quot;LE&quot;</span>,<span class="st">&quot;P&quot;</span>), </span>
+<span id="cb318-18"><a href="r语言韦恩图.html#cb318-18" aria-hidden="true" tabindex="-1"></a>                                <span class="at">active =</span> T,</span>
+<span id="cb318-19"><a href="r语言韦恩图.html#cb318-19" aria-hidden="true" tabindex="-1"></a>                                <span class="at">color=</span><span class="st">&quot;#d66a35&quot;</span>, </span>
+<span id="cb318-20"><a href="r语言韦恩图.html#cb318-20" aria-hidden="true" tabindex="-1"></a>                                <span class="at">query.name =</span> <span class="st">&quot;BS vs RS vs RE vs VE vs SE vs LE vs P&quot;</span>)))</span>
+<span id="cb318-21"><a href="r语言韦恩图.html#cb318-21" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-235-1.png" width="672" /></p>
 
 </div>
             </section>
@@ -385,8 +397,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="r语言ggplot2热图.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="r语言ggplot2热图.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="r语言ggtree树状图.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

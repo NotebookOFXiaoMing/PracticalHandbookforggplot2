@@ -194,6 +194,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.4" data-path="r语言ggplot2热图.html"><a href="r语言ggplot2热图.html#一个完整的例子"><i class="fa fa-check"></i><b>8.4</b> 一个完整的例子</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="r语言韦恩图.html"><a href="r语言韦恩图.html"><i class="fa fa-check"></i><b>9</b> R语言韦恩图</a></li>
+<li class="chapter" data-level="10" data-path="r语言ggtree树状图.html"><a href="r语言ggtree树状图.html"><i class="fa fa-check"></i><b>10</b> R语言ggtree树状图</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="r语言ggtree树状图.html"><a href="r语言ggtree树状图.html#进化树"><i class="fa fa-check"></i><b>10.1</b> 进化树</a></li>
+<li class="chapter" data-level="10.2" data-path="r语言ggtree树状图.html"><a href="r语言ggtree树状图.html#ggtreeextra添加额外注释信息"><i class="fa fa-check"></i><b>10.2</b> ggtreeExtra添加额外注释信息</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -221,33 +226,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="img/08-heatmap/001.png"></p>
 <p>pheatmap不是R语言自带的R包，第一次使用需要先安装,安装直接使用命令<code>install.packages("pheatmap")</code></p>
 <p>读取数据</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="r语言ggplot2热图.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb227-2"><a href="r语言ggplot2热图.html#cb227-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/06-lineplot/dat08.xlsx&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="r语言ggplot2热图.html#cb222-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb222-2"><a href="r语言ggplot2热图.html#cb222-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/06-lineplot/dat08.xlsx&quot;</span>)</span></code></pre></div>
 <p>这里需要注意的 一个点是热图数据通常需要把第一列的基因名作为整个数据的行名，但是读取excel的函数好像没有指定列为行名的函数，当然可以将数据集读取进来以后再进行转换，另外一种方式就是把数据另存为csv格式，然后用读取csv格式数据的函数</p>
 <p>这里需要注意的一点是转换为csv格式的时候选择如下截图中的2，不要选择1</p>
 <p><img src="img/08-heatmap/002.png"></p>
 <p>读取csv格式数据</p>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="r语言ggplot2热图.html#cb228-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read.delim</span>(<span class="at">file =</span> <span class="st">&quot;example_data/08-heatmap/01pheatmap_example.csv&quot;</span>,</span>
-<span id="cb228-2"><a href="r语言ggplot2热图.html#cb228-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>,</span>
-<span id="cb228-3"><a href="r语言ggplot2热图.html#cb228-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep=</span><span class="st">&quot;,&quot;</span>,</span>
-<span id="cb228-4"><a href="r语言ggplot2热图.html#cb228-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="r语言ggplot2热图.html#cb223-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read.delim</span>(<span class="at">file =</span> <span class="st">&quot;example_data/08-heatmap/01pheatmap_example.csv&quot;</span>,</span>
+<span id="cb223-2"><a href="r语言ggplot2热图.html#cb223-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>,</span>
+<span id="cb223-3"><a href="r语言ggplot2热图.html#cb223-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep=</span><span class="st">&quot;,&quot;</span>,</span>
+<span id="cb223-4"><a href="r语言ggplot2热图.html#cb223-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>作图代码</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="r语言ggplot2热图.html#cb229-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read.delim</span>(<span class="at">file =</span> <span class="st">&quot;example_data/08-heatmap/01pheatmap_example.csv&quot;</span>,</span>
-<span id="cb229-2"><a href="r语言ggplot2热图.html#cb229-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>,</span>
-<span id="cb229-3"><a href="r语言ggplot2热图.html#cb229-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep=</span><span class="st">&quot;,&quot;</span>,</span>
-<span id="cb229-4"><a href="r语言ggplot2热图.html#cb229-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="dv">1</span>)</span>
-<span id="cb229-5"><a href="r语言ggplot2热图.html#cb229-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
-<span id="cb229-6"><a href="r语言ggplot2热图.html#cb229-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="r语言ggplot2热图.html#cb224-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read.delim</span>(<span class="at">file =</span> <span class="st">&quot;example_data/08-heatmap/01pheatmap_example.csv&quot;</span>,</span>
+<span id="cb224-2"><a href="r语言ggplot2热图.html#cb224-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>,</span>
+<span id="cb224-3"><a href="r语言ggplot2热图.html#cb224-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep=</span><span class="st">&quot;,&quot;</span>,</span>
+<span id="cb224-4"><a href="r语言ggplot2热图.html#cb224-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb224-5"><a href="r语言ggplot2热图.html#cb224-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb224-6"><a href="r语言ggplot2热图.html#cb224-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dat01)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
 <p>如果要在色块上添加文本，再单独准备一个和热图数据格式一样的数据，然后用display_numbers参数添加文本,这里我就直接使用热图的数据</p>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="r语言ggplot2热图.html#cb230-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read.delim</span>(<span class="at">file =</span> <span class="st">&quot;example_data/08-heatmap/01pheatmap_example.csv&quot;</span>,</span>
-<span id="cb230-2"><a href="r语言ggplot2热图.html#cb230-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>,</span>
-<span id="cb230-3"><a href="r语言ggplot2热图.html#cb230-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep=</span><span class="st">&quot;,&quot;</span>,</span>
-<span id="cb230-4"><a href="r语言ggplot2热图.html#cb230-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="dv">1</span>)</span>
-<span id="cb230-5"><a href="r语言ggplot2热图.html#cb230-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
-<span id="cb230-6"><a href="r语言ggplot2热图.html#cb230-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dat01)</span>
-<span id="cb230-7"><a href="r语言ggplot2热图.html#cb230-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dat01,</span>
-<span id="cb230-8"><a href="r语言ggplot2热图.html#cb230-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">display_numbers =</span> dat01)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-107-1.png" width="672" /><img src="bookdownproj_files/figure-html/unnamed-chunk-107-2.png" width="672" /></p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="r语言ggplot2热图.html#cb225-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read.delim</span>(<span class="at">file =</span> <span class="st">&quot;example_data/08-heatmap/01pheatmap_example.csv&quot;</span>,</span>
+<span id="cb225-2"><a href="r语言ggplot2热图.html#cb225-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">header=</span><span class="cn">TRUE</span>,</span>
+<span id="cb225-3"><a href="r语言ggplot2热图.html#cb225-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sep=</span><span class="st">&quot;,&quot;</span>,</span>
+<span id="cb225-4"><a href="r语言ggplot2热图.html#cb225-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb225-5"><a href="r语言ggplot2热图.html#cb225-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb225-6"><a href="r语言ggplot2热图.html#cb225-6" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dat01)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-214-1.png" width="672" /></p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="r语言ggplot2热图.html#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dat01,</span>
+<span id="cb226-2"><a href="r语言ggplot2热图.html#cb226-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">display_numbers =</span> dat01)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-214-2.png" width="672" /></p>
 <p>以上是对pheatmap这个R包的简要介绍</p>
 <p>ggplot2也有直接做热图的函数 geom_tile(),ggplot2做热图可能代码稍微繁琐，但是优点是细节调整方便，基本上所有的细节都可以用代码来调整</p>
 <p>ggplot2做热图还需要掌握的一个知识点是 长格式数据 和 宽格式 数据，ggplot2作图的输入数据都是长格式数据，长格式数据如下，一列x，一列y，还有一个数据</p>
@@ -258,18 +265,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>R语言里提供了长宽格式数据互相转化的函数，这里我以tidyverse这个R包里的函数作为介绍，tidyverse主要是用来在数据处理的，也不是R语言自带的R包，需要运行安装命令<code>install.packages("tidyverse")</code></p>
 <p>宽格式数据转换为长格式用到的函数是pivot_longer()</p>
 <p>转换代码</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="r语言ggplot2热图.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb231-2"><a href="r语言ggplot2热图.html#cb231-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/02_wide_data.xlsx&quot;</span>)</span>
-<span id="cb231-3"><a href="r语言ggplot2热图.html#cb231-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="r语言ggplot2热图.html#cb227-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb227-2"><a href="r语言ggplot2热图.html#cb227-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/02_wide_data.xlsx&quot;</span>)</span>
+<span id="cb227-3"><a href="r语言ggplot2热图.html#cb227-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 3
 ##   gene_name sample1 sample2
 ##   &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 gene1           4       3
 ## 2 gene2           5       4</code></pre>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="r语言ggplot2热图.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb233-2"><a href="r语言ggplot2热图.html#cb233-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb233-3"><a href="r语言ggplot2热图.html#cb233-3" aria-hidden="true" tabindex="-1"></a>dat01 <span class="sc">%&gt;%</span> </span>
-<span id="cb233-4"><a href="r语言ggplot2热图.html#cb233-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>gene_name,<span class="at">names_to =</span> <span class="st">&quot;A&quot;</span>,<span class="at">values_to =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="r语言ggplot2热图.html#cb229-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb229-2"><a href="r语言ggplot2热图.html#cb229-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb229-3"><a href="r语言ggplot2热图.html#cb229-3" aria-hidden="true" tabindex="-1"></a>dat01 <span class="sc">%&gt;%</span> </span>
+<span id="cb229-4"><a href="r语言ggplot2热图.html#cb229-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>gene_name,<span class="at">names_to =</span> <span class="st">&quot;A&quot;</span>,<span class="at">values_to =</span> <span class="st">&quot;B&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
 ##   gene_name A           B
 ##   &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt;
@@ -279,9 +286,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene2     sample2     4</code></pre>
 <p>长格式转换为宽格式的函数是pivot_wider()</p>
 <p>转换代码</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="r语言ggplot2热图.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb235-2"><a href="r语言ggplot2热图.html#cb235-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/02_long_data.xlsx&quot;</span>)</span>
-<span id="cb235-3"><a href="r语言ggplot2热图.html#cb235-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="r语言ggplot2热图.html#cb231-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb231-2"><a href="r语言ggplot2热图.html#cb231-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/02_long_data.xlsx&quot;</span>)</span>
+<span id="cb231-3"><a href="r语言ggplot2热图.html#cb231-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
 ##   x     y       value
 ##   &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;
@@ -289,10 +296,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 2 gene1 sample2     4
 ## 3 gene2 sample1     5
 ## 4 gene2 sample2     6</code></pre>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="r语言ggplot2热图.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb237-2"><a href="r语言ggplot2热图.html#cb237-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb237-3"><a href="r语言ggplot2热图.html#cb237-3" aria-hidden="true" tabindex="-1"></a>dat01 <span class="sc">%&gt;%</span> </span>
-<span id="cb237-4"><a href="r语言ggplot2热图.html#cb237-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> y,<span class="at">values_from =</span> value)</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="r语言ggplot2热图.html#cb233-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb233-2"><a href="r语言ggplot2热图.html#cb233-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb233-3"><a href="r语言ggplot2热图.html#cb233-3" aria-hidden="true" tabindex="-1"></a>dat01 <span class="sc">%&gt;%</span> </span>
+<span id="cb233-4"><a href="r语言ggplot2热图.html#cb233-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> y,<span class="at">values_from =</span> value)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 3
 ##   x     sample1 sample2
 ##   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;
@@ -306,6 +313,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>示例数据如下</p>
 <p><img src="img/08-heatmap/005.png"></p>
 <p>最基本的热图代码</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="r语言ggplot2热图.html#cb235-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb235-2"><a href="r语言ggplot2热图.html#cb235-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb235-3"><a href="r语言ggplot2热图.html#cb235-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   gene_name Sample   expr_value
+##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
+## 1 gene_1    sample_1          1
+## 2 gene_1    sample_2          5
+## 3 gene_1    sample_3          8
+## 4 gene_1    sample_4          4
+## 5 gene_1    sample_5          2
+## 6 gene_1    sample_6          5</code></pre>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="r语言ggplot2热图.html#cb237-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb237-2"><a href="r语言ggplot2热图.html#cb237-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb237-3"><a href="r语言ggplot2热图.html#cb237-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb237-4"><a href="r语言ggplot2热图.html#cb237-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="r语言ggplot2热图.html#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb238-2"><a href="r语言ggplot2热图.html#cb238-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="cn">NA</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-217-2.png" width="672" /></p>
+<p>热图经常遇到的操作是调整坐标轴的顺序，这个可以通过赋予因子水平来实现</p>
 <div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="r语言ggplot2热图.html#cb239-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb239-2"><a href="r语言ggplot2热图.html#cb239-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
 <span id="cb239-3"><a href="r语言ggplot2热图.html#cb239-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
@@ -318,15 +346,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4          4
 ## 5 gene_1    sample_5          2
 ## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="r语言ggplot2热图.html#cb241-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb241-2"><a href="r语言ggplot2热图.html#cb241-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb241-3"><a href="r语言ggplot2热图.html#cb241-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb241-4"><a href="r语言ggplot2热图.html#cb241-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="r语言ggplot2热图.html#cb242-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb242-2"><a href="r语言ggplot2热图.html#cb242-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="cn">NA</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-110-2.png" width="672" /></p>
-<p>热图经常遇到的操作是调整坐标轴的顺序，这个可以通过赋予因子水平来实现</p>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="r语言ggplot2热图.html#cb241-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb241-2"><a href="r语言ggplot2热图.html#cb241-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb241-3"><a href="r语言ggplot2热图.html#cb241-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb241-4"><a href="r语言ggplot2热图.html#cb241-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb241-5"><a href="r语言ggplot2热图.html#cb241-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb241-6"><a href="r语言ggplot2热图.html#cb241-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb241-7"><a href="r语言ggplot2热图.html#cb241-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb241-8"><a href="r语言ggplot2热图.html#cb241-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb241-9"><a href="r语言ggplot2热图.html#cb241-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb241-10"><a href="r语言ggplot2热图.html#cb241-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-218-1.png" width="672" /></p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="r语言ggplot2热图.html#cb242-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>Sample<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>Sample,</span>
+<span id="cb242-2"><a href="r语言ggplot2热图.html#cb242-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;sample_2&quot;</span>,<span class="st">&quot;sample_4&quot;</span>,<span class="st">&quot;sample_6&quot;</span>,</span>
+<span id="cb242-3"><a href="r语言ggplot2热图.html#cb242-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;sample_1&quot;</span>,<span class="st">&quot;sample_3&quot;</span>,<span class="st">&quot;sample_5&quot;</span>))</span>
+<span id="cb242-4"><a href="r语言ggplot2热图.html#cb242-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb242-5"><a href="r语言ggplot2热图.html#cb242-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb242-6"><a href="r语言ggplot2热图.html#cb242-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-218-2.png" width="672" /></p>
+<p>更改热图色块填充的颜色</p>
+<p>更改热图填充颜色有很多种方式，这里我介绍我自己最常用的一种方式</p>
+<p>参考链接</p>
+<p><a href="https://r-charts.com/" class="uri">https://r-charts.com/</a></p>
+<p>这里用到额外的一个R包 paletteer</p>
+<p><a href="https://github.com/EmilHvitfeldt/paletteer" class="uri">https://github.com/EmilHvitfeldt/paletteer</a></p>
 <div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="r语言ggplot2热图.html#cb243-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb243-2"><a href="r语言ggplot2热图.html#cb243-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
 <span id="cb243-3"><a href="r语言ggplot2热图.html#cb243-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
@@ -349,58 +392,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb245-8"><a href="r语言ggplot2热图.html#cb245-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb245-9"><a href="r语言ggplot2热图.html#cb245-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
 <span id="cb245-10"><a href="r语言ggplot2热图.html#cb245-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="r语言ggplot2热图.html#cb246-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>Sample<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>Sample,</span>
-<span id="cb246-2"><a href="r语言ggplot2热图.html#cb246-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;sample_2&quot;</span>,<span class="st">&quot;sample_4&quot;</span>,<span class="st">&quot;sample_6&quot;</span>,</span>
-<span id="cb246-3"><a href="r语言ggplot2热图.html#cb246-3" aria-hidden="true" tabindex="-1"></a>                                <span class="st">&quot;sample_1&quot;</span>,<span class="st">&quot;sample_3&quot;</span>,<span class="st">&quot;sample_5&quot;</span>))</span>
-<span id="cb246-4"><a href="r语言ggplot2热图.html#cb246-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb246-5"><a href="r语言ggplot2热图.html#cb246-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb246-6"><a href="r语言ggplot2热图.html#cb246-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-111-2.png" width="672" /></p>
-<p>更改热图色块填充的颜色</p>
-<p>更改热图填充颜色有很多种方式，这里我介绍我自己最常用的一种方式</p>
-<p>参考链接</p>
-<p><a href="https://r-charts.com/" class="uri">https://r-charts.com/</a></p>
-<p>这里用到额外的一个R包 paletteer</p>
-<p><a href="https://github.com/EmilHvitfeldt/paletteer" class="uri">https://github.com/EmilHvitfeldt/paletteer</a></p>
-<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="r语言ggplot2热图.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb247-2"><a href="r语言ggplot2热图.html#cb247-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb247-3"><a href="r语言ggplot2热图.html#cb247-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 3
-##   gene_name Sample   expr_value
-##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
-## 1 gene_1    sample_1          1
-## 2 gene_1    sample_2          5
-## 3 gene_1    sample_3          8
-## 4 gene_1    sample_4          4
-## 5 gene_1    sample_5          2
-## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="r语言ggplot2热图.html#cb249-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb249-2"><a href="r语言ggplot2热图.html#cb249-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb249-3"><a href="r语言ggplot2热图.html#cb249-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb249-4"><a href="r语言ggplot2热图.html#cb249-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb249-5"><a href="r语言ggplot2热图.html#cb249-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb249-6"><a href="r语言ggplot2热图.html#cb249-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb249-7"><a href="r语言ggplot2热图.html#cb249-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb249-8"><a href="r语言ggplot2热图.html#cb249-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb249-9"><a href="r语言ggplot2热图.html#cb249-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb249-10"><a href="r语言ggplot2热图.html#cb249-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="r语言ggplot2热图.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="r语言ggplot2热图.html#cb246-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span></code></pre></div>
 <pre><code>## Warning: package &#39;paletteer&#39; was built under R version 4.0.5</code></pre>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="r语言ggplot2热图.html#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb252-2"><a href="r语言ggplot2热图.html#cb252-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb252-3"><a href="r语言ggplot2热图.html#cb252-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-112-2.png" width="672" /></p>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="r语言ggplot2热图.html#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb253-2"><a href="r语言ggplot2热图.html#cb253-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb253-3"><a href="r语言ggplot2热图.html#cb253-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb253-4"><a href="r语言ggplot2热图.html#cb253-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-112-3.png" width="672" /></p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="r语言ggplot2热图.html#cb248-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb248-2"><a href="r语言ggplot2热图.html#cb248-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb248-3"><a href="r语言ggplot2热图.html#cb248-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-219-2.png" width="672" /></p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="r语言ggplot2热图.html#cb249-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb249-2"><a href="r语言ggplot2热图.html#cb249-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb249-3"><a href="r语言ggplot2热图.html#cb249-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb249-4"><a href="r语言ggplot2热图.html#cb249-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-219-3.png" width="672" /></p>
 <p>调整坐标轴文本标签的位置，y轴左右，x轴是上下</p>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="r语言ggplot2热图.html#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb254-2"><a href="r语言ggplot2热图.html#cb254-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb254-3"><a href="r语言ggplot2热图.html#cb254-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="r语言ggplot2热图.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb250-2"><a href="r语言ggplot2热图.html#cb250-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb250-3"><a href="r语言ggplot2热图.html#cb250-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   gene_name Sample   expr_value
 ##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
@@ -410,24 +417,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4          4
 ## 5 gene_1    sample_5          2
 ## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="r语言ggplot2热图.html#cb256-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb256-2"><a href="r语言ggplot2热图.html#cb256-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb256-3"><a href="r语言ggplot2热图.html#cb256-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb256-4"><a href="r语言ggplot2热图.html#cb256-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb256-5"><a href="r语言ggplot2热图.html#cb256-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb256-6"><a href="r语言ggplot2热图.html#cb256-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb256-7"><a href="r语言ggplot2热图.html#cb256-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb256-8"><a href="r语言ggplot2热图.html#cb256-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb256-9"><a href="r语言ggplot2热图.html#cb256-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
-<span id="cb256-10"><a href="r语言ggplot2热图.html#cb256-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb256-11"><a href="r语言ggplot2热图.html#cb256-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb256-12"><a href="r语言ggplot2热图.html#cb256-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb256-13"><a href="r语言ggplot2热图.html#cb256-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb256-14"><a href="r语言ggplot2热图.html#cb256-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb256-15"><a href="r语言ggplot2热图.html#cb256-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
-<span id="cb256-16"><a href="r语言ggplot2热图.html#cb256-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="r语言ggplot2热图.html#cb252-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb252-2"><a href="r语言ggplot2热图.html#cb252-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb252-3"><a href="r语言ggplot2热图.html#cb252-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb252-4"><a href="r语言ggplot2热图.html#cb252-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb252-5"><a href="r语言ggplot2热图.html#cb252-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb252-6"><a href="r语言ggplot2热图.html#cb252-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-7"><a href="r语言ggplot2热图.html#cb252-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb252-8"><a href="r语言ggplot2热图.html#cb252-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-9"><a href="r语言ggplot2热图.html#cb252-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb252-10"><a href="r语言ggplot2热图.html#cb252-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb252-11"><a href="r语言ggplot2热图.html#cb252-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb252-12"><a href="r语言ggplot2热图.html#cb252-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb252-13"><a href="r语言ggplot2热图.html#cb252-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb252-14"><a href="r语言ggplot2热图.html#cb252-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb252-15"><a href="r语言ggplot2热图.html#cb252-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb252-16"><a href="r语言ggplot2热图.html#cb252-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
 <p>调整坐标轴的文本方向</p>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="r语言ggplot2热图.html#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb253-2"><a href="r语言ggplot2热图.html#cb253-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb253-3"><a href="r语言ggplot2热图.html#cb253-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+##   gene_name Sample   expr_value
+##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
+## 1 gene_1    sample_1          1
+## 2 gene_1    sample_2          5
+## 3 gene_1    sample_3          8
+## 4 gene_1    sample_4          4
+## 5 gene_1    sample_5          2
+## 6 gene_1    sample_6          5</code></pre>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="r语言ggplot2热图.html#cb255-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb255-2"><a href="r语言ggplot2热图.html#cb255-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb255-3"><a href="r语言ggplot2热图.html#cb255-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb255-4"><a href="r语言ggplot2热图.html#cb255-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb255-5"><a href="r语言ggplot2热图.html#cb255-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb255-6"><a href="r语言ggplot2热图.html#cb255-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb255-7"><a href="r语言ggplot2热图.html#cb255-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb255-8"><a href="r语言ggplot2热图.html#cb255-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb255-9"><a href="r语言ggplot2热图.html#cb255-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb255-10"><a href="r语言ggplot2热图.html#cb255-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb255-11"><a href="r语言ggplot2热图.html#cb255-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb255-12"><a href="r语言ggplot2热图.html#cb255-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb255-13"><a href="r语言ggplot2热图.html#cb255-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb255-14"><a href="r语言ggplot2热图.html#cb255-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb255-15"><a href="r语言ggplot2热图.html#cb255-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb255-16"><a href="r语言ggplot2热图.html#cb255-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
+<span id="cb255-17"><a href="r语言ggplot2热图.html#cb255-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="r语言ggplot2热图.html#cb256-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb256-2"><a href="r语言ggplot2热图.html#cb256-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb256-3"><a href="r语言ggplot2热图.html#cb256-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb256-4"><a href="r语言ggplot2热图.html#cb256-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb256-5"><a href="r语言ggplot2热图.html#cb256-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb256-6"><a href="r语言ggplot2热图.html#cb256-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
+<span id="cb256-7"><a href="r语言ggplot2热图.html#cb256-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-221-2.png" width="672" />
+去掉整个的灰色背景和坐标轴的小短线</p>
 <div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="r语言ggplot2热图.html#cb257-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb257-2"><a href="r语言ggplot2热图.html#cb257-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
 <span id="cb257-3"><a href="r语言ggplot2热图.html#cb257-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
@@ -456,53 +502,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb259-14"><a href="r语言ggplot2热图.html#cb259-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
 <span id="cb259-15"><a href="r语言ggplot2热图.html#cb259-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
 <span id="cb259-16"><a href="r语言ggplot2热图.html#cb259-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
-<span id="cb259-17"><a href="r语言ggplot2热图.html#cb259-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="r语言ggplot2热图.html#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb260-2"><a href="r语言ggplot2热图.html#cb260-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb260-3"><a href="r语言ggplot2热图.html#cb260-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb260-4"><a href="r语言ggplot2热图.html#cb260-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb260-5"><a href="r语言ggplot2热图.html#cb260-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
-<span id="cb260-6"><a href="r语言ggplot2热图.html#cb260-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
-<span id="cb260-7"><a href="r语言ggplot2热图.html#cb260-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-114-2.png" width="672" />
-去掉整个的灰色背景和坐标轴的小短线</p>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="r语言ggplot2热图.html#cb261-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb261-2"><a href="r语言ggplot2热图.html#cb261-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb261-3"><a href="r语言ggplot2热图.html#cb261-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 3
-##   gene_name Sample   expr_value
-##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
-## 1 gene_1    sample_1          1
-## 2 gene_1    sample_2          5
-## 3 gene_1    sample_3          8
-## 4 gene_1    sample_4          4
-## 5 gene_1    sample_5          2
-## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="r语言ggplot2热图.html#cb263-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb263-2"><a href="r语言ggplot2热图.html#cb263-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb263-3"><a href="r语言ggplot2热图.html#cb263-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb263-4"><a href="r语言ggplot2热图.html#cb263-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb263-5"><a href="r语言ggplot2热图.html#cb263-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb263-6"><a href="r语言ggplot2热图.html#cb263-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb263-7"><a href="r语言ggplot2热图.html#cb263-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb263-8"><a href="r语言ggplot2热图.html#cb263-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb263-9"><a href="r语言ggplot2热图.html#cb263-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
-<span id="cb263-10"><a href="r语言ggplot2热图.html#cb263-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb263-11"><a href="r语言ggplot2热图.html#cb263-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb263-12"><a href="r语言ggplot2热图.html#cb263-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb263-13"><a href="r语言ggplot2热图.html#cb263-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb263-14"><a href="r语言ggplot2热图.html#cb263-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb263-15"><a href="r语言ggplot2热图.html#cb263-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
-<span id="cb263-16"><a href="r语言ggplot2热图.html#cb263-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
-<span id="cb263-17"><a href="r语言ggplot2热图.html#cb263-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
-<span id="cb263-18"><a href="r语言ggplot2热图.html#cb263-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb263-19"><a href="r语言ggplot2热图.html#cb263-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<span id="cb259-17"><a href="r语言ggplot2热图.html#cb259-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
+<span id="cb259-18"><a href="r语言ggplot2热图.html#cb259-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb259-19"><a href="r语言ggplot2热图.html#cb259-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-222-1.png" width="672" /></p>
 <p>如果看起来坐标轴的文本距离图比较远的话还可以调整</p>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="r语言ggplot2热图.html#cb264-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb264-2"><a href="r语言ggplot2热图.html#cb264-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb264-3"><a href="r语言ggplot2热图.html#cb264-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="r语言ggplot2热图.html#cb260-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb260-2"><a href="r语言ggplot2热图.html#cb260-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb260-3"><a href="r语言ggplot2热图.html#cb260-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   gene_name Sample   expr_value
 ##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
@@ -512,32 +519,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4          4
 ## 5 gene_1    sample_5          2
 ## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="r语言ggplot2热图.html#cb266-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb266-2"><a href="r语言ggplot2热图.html#cb266-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb266-3"><a href="r语言ggplot2热图.html#cb266-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb266-4"><a href="r语言ggplot2热图.html#cb266-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb266-5"><a href="r语言ggplot2热图.html#cb266-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb266-6"><a href="r语言ggplot2热图.html#cb266-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb266-7"><a href="r语言ggplot2热图.html#cb266-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb266-8"><a href="r语言ggplot2热图.html#cb266-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb266-9"><a href="r语言ggplot2热图.html#cb266-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
-<span id="cb266-10"><a href="r语言ggplot2热图.html#cb266-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb266-11"><a href="r语言ggplot2热图.html#cb266-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb266-12"><a href="r语言ggplot2热图.html#cb266-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb266-13"><a href="r语言ggplot2热图.html#cb266-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb266-14"><a href="r语言ggplot2热图.html#cb266-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb266-15"><a href="r语言ggplot2热图.html#cb266-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>,</span>
-<span id="cb266-16"><a href="r语言ggplot2热图.html#cb266-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb266-17"><a href="r语言ggplot2热图.html#cb266-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb266-18"><a href="r语言ggplot2热图.html#cb266-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb266-19"><a href="r语言ggplot2热图.html#cb266-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
-<span id="cb266-20"><a href="r语言ggplot2热图.html#cb266-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb266-21"><a href="r语言ggplot2热图.html#cb266-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="r语言ggplot2热图.html#cb262-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb262-2"><a href="r语言ggplot2热图.html#cb262-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb262-3"><a href="r语言ggplot2热图.html#cb262-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb262-4"><a href="r语言ggplot2热图.html#cb262-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb262-5"><a href="r语言ggplot2热图.html#cb262-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb262-6"><a href="r语言ggplot2热图.html#cb262-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-7"><a href="r语言ggplot2热图.html#cb262-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb262-8"><a href="r语言ggplot2热图.html#cb262-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-9"><a href="r语言ggplot2热图.html#cb262-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb262-10"><a href="r语言ggplot2热图.html#cb262-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb262-11"><a href="r语言ggplot2热图.html#cb262-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb262-12"><a href="r语言ggplot2热图.html#cb262-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb262-13"><a href="r语言ggplot2热图.html#cb262-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb262-14"><a href="r语言ggplot2热图.html#cb262-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb262-15"><a href="r语言ggplot2热图.html#cb262-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>,</span>
+<span id="cb262-16"><a href="r语言ggplot2热图.html#cb262-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb262-17"><a href="r语言ggplot2热图.html#cb262-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb262-18"><a href="r语言ggplot2热图.html#cb262-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb262-19"><a href="r语言ggplot2热图.html#cb262-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
+<span id="cb262-20"><a href="r语言ggplot2热图.html#cb262-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb262-21"><a href="r语言ggplot2热图.html#cb262-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-223-1.png" width="672" /></p>
 <p>在色块上添加文本，用geom_text()函数来添加</p>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="r语言ggplot2热图.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb267-2"><a href="r语言ggplot2热图.html#cb267-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb267-3"><a href="r语言ggplot2热图.html#cb267-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="r语言ggplot2热图.html#cb263-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb263-2"><a href="r语言ggplot2热图.html#cb263-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb263-3"><a href="r语言ggplot2热图.html#cb263-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   gene_name Sample   expr_value
 ##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
@@ -547,37 +554,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4          4
 ## 5 gene_1    sample_5          2
 ## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="r语言ggplot2热图.html#cb269-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb269-2"><a href="r语言ggplot2热图.html#cb269-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb269-3"><a href="r语言ggplot2热图.html#cb269-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb269-4"><a href="r语言ggplot2热图.html#cb269-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb269-5"><a href="r语言ggplot2热图.html#cb269-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb269-6"><a href="r语言ggplot2热图.html#cb269-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-7"><a href="r语言ggplot2热图.html#cb269-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb269-8"><a href="r语言ggplot2热图.html#cb269-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-9"><a href="r语言ggplot2热图.html#cb269-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
-<span id="cb269-10"><a href="r语言ggplot2热图.html#cb269-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-11"><a href="r语言ggplot2热图.html#cb269-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb269-12"><a href="r语言ggplot2热图.html#cb269-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb269-13"><a href="r语言ggplot2热图.html#cb269-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb269-14"><a href="r语言ggplot2热图.html#cb269-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb269-15"><a href="r语言ggplot2热图.html#cb269-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>,</span>
-<span id="cb269-16"><a href="r语言ggplot2热图.html#cb269-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb269-17"><a href="r语言ggplot2热图.html#cb269-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb269-18"><a href="r语言ggplot2热图.html#cb269-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb269-19"><a href="r语言ggplot2热图.html#cb269-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
-<span id="cb269-20"><a href="r语言ggplot2热图.html#cb269-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb269-21"><a href="r语言ggplot2热图.html#cb269-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb269-22"><a href="r语言ggplot2热图.html#cb269-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>expr_value))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="r语言ggplot2热图.html#cb265-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb265-2"><a href="r语言ggplot2热图.html#cb265-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb265-3"><a href="r语言ggplot2热图.html#cb265-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb265-4"><a href="r语言ggplot2热图.html#cb265-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb265-5"><a href="r语言ggplot2热图.html#cb265-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb265-6"><a href="r语言ggplot2热图.html#cb265-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-7"><a href="r语言ggplot2热图.html#cb265-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb265-8"><a href="r语言ggplot2热图.html#cb265-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-9"><a href="r语言ggplot2热图.html#cb265-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb265-10"><a href="r语言ggplot2热图.html#cb265-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb265-11"><a href="r语言ggplot2热图.html#cb265-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb265-12"><a href="r语言ggplot2热图.html#cb265-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb265-13"><a href="r语言ggplot2热图.html#cb265-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb265-14"><a href="r语言ggplot2热图.html#cb265-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb265-15"><a href="r语言ggplot2热图.html#cb265-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>,</span>
+<span id="cb265-16"><a href="r语言ggplot2热图.html#cb265-16" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb265-17"><a href="r语言ggplot2热图.html#cb265-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb265-18"><a href="r语言ggplot2热图.html#cb265-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb265-19"><a href="r语言ggplot2热图.html#cb265-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
+<span id="cb265-20"><a href="r语言ggplot2热图.html#cb265-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb265-21"><a href="r语言ggplot2热图.html#cb265-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb265-22"><a href="r语言ggplot2热图.html#cb265-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>expr_value))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-224-1.png" width="672" /></p>
 <p>调整图例的细节</p>
 <p>参考公众号推文 <em>ggplot2画热图展示相关系数的简单小例子</em></p>
 <p>截断和标签是在scale_fill函数里设置breaks和labels</p>
 <p>图例的位置是在主题里进行设置</p>
 <p>其他一些细节在guides函数里设置</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="r语言ggplot2热图.html#cb270-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb270-2"><a href="r语言ggplot2热图.html#cb270-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb270-3"><a href="r语言ggplot2热图.html#cb270-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="r语言ggplot2热图.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb266-2"><a href="r语言ggplot2热图.html#cb266-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb266-3"><a href="r语言ggplot2热图.html#cb266-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   gene_name Sample   expr_value
 ##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
@@ -587,44 +594,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4          4
 ## 5 gene_1    sample_5          2
 ## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="r语言ggplot2热图.html#cb272-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb272-2"><a href="r语言ggplot2热图.html#cb272-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb272-3"><a href="r语言ggplot2热图.html#cb272-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb272-4"><a href="r语言ggplot2热图.html#cb272-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb272-5"><a href="r语言ggplot2热图.html#cb272-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb272-6"><a href="r语言ggplot2热图.html#cb272-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb272-7"><a href="r语言ggplot2热图.html#cb272-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb272-8"><a href="r语言ggplot2热图.html#cb272-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb272-9"><a href="r语言ggplot2热图.html#cb272-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
-<span id="cb272-10"><a href="r语言ggplot2热图.html#cb272-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb272-11"><a href="r语言ggplot2热图.html#cb272-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb272-12"><a href="r语言ggplot2热图.html#cb272-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
-<span id="cb272-13"><a href="r语言ggplot2热图.html#cb272-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb272-14"><a href="r语言ggplot2热图.html#cb272-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
-<span id="cb272-15"><a href="r语言ggplot2热图.html#cb272-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">breaks=</span><span class="fu">c</span>(<span class="fl">1.1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="fl">9.9</span>),</span>
-<span id="cb272-16"><a href="r语言ggplot2热图.html#cb272-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">10</span>))<span class="sc">+</span></span>
-<span id="cb272-17"><a href="r语言ggplot2热图.html#cb272-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>,</span>
-<span id="cb272-18"><a href="r语言ggplot2热图.html#cb272-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb272-19"><a href="r语言ggplot2热图.html#cb272-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb272-20"><a href="r语言ggplot2热图.html#cb272-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb272-21"><a href="r语言ggplot2热图.html#cb272-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
-<span id="cb272-22"><a href="r语言ggplot2热图.html#cb272-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb272-23"><a href="r语言ggplot2热图.html#cb272-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb272-24"><a href="r语言ggplot2热图.html#cb272-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>expr_value))<span class="sc">+</span></span>
-<span id="cb272-25"><a href="r语言ggplot2热图.html#cb272-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
-<span id="cb272-26"><a href="r语言ggplot2热图.html#cb272-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill=</span><span class="fu">guide_colorbar</span>(<span class="at">title =</span> <span class="st">&quot;AAA&quot;</span>,</span>
-<span id="cb272-27"><a href="r语言ggplot2热图.html#cb272-27" aria-hidden="true" tabindex="-1"></a>                             <span class="at">title.position =</span> <span class="st">&quot;top&quot;</span>,</span>
-<span id="cb272-28"><a href="r语言ggplot2热图.html#cb272-28" aria-hidden="true" tabindex="-1"></a>                             <span class="at">title.hjust =</span> <span class="fl">0.5</span>,</span>
-<span id="cb272-29"><a href="r语言ggplot2热图.html#cb272-29" aria-hidden="true" tabindex="-1"></a>                             <span class="at">barwidth =</span> <span class="dv">20</span>,</span>
-<span id="cb272-30"><a href="r语言ggplot2热图.html#cb272-30" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ticks =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb272-31"><a href="r语言ggplot2热图.html#cb272-31" aria-hidden="true" tabindex="-1"></a>                             <span class="at">label =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="r语言ggplot2热图.html#cb268-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb268-2"><a href="r语言ggplot2热图.html#cb268-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb268-3"><a href="r语言ggplot2热图.html#cb268-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb268-4"><a href="r语言ggplot2热图.html#cb268-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb268-5"><a href="r语言ggplot2热图.html#cb268-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb268-6"><a href="r语言ggplot2热图.html#cb268-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-7"><a href="r语言ggplot2热图.html#cb268-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb268-8"><a href="r语言ggplot2热图.html#cb268-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-9"><a href="r语言ggplot2热图.html#cb268-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb268-10"><a href="r语言ggplot2热图.html#cb268-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb268-11"><a href="r语言ggplot2热图.html#cb268-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb268-12"><a href="r语言ggplot2热图.html#cb268-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value),<span class="at">color=</span><span class="st">&quot;red&quot;</span>)<span class="sc">+</span></span>
+<span id="cb268-13"><a href="r语言ggplot2热图.html#cb268-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb268-14"><a href="r语言ggplot2热图.html#cb268-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb268-15"><a href="r语言ggplot2热图.html#cb268-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">breaks=</span><span class="fu">c</span>(<span class="fl">1.1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="fl">9.9</span>),</span>
+<span id="cb268-16"><a href="r语言ggplot2热图.html#cb268-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">labels=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">10</span>))<span class="sc">+</span></span>
+<span id="cb268-17"><a href="r语言ggplot2热图.html#cb268-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">position =</span> <span class="st">&quot;top&quot;</span>,</span>
+<span id="cb268-18"><a href="r语言ggplot2热图.html#cb268-18" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb268-19"><a href="r语言ggplot2热图.html#cb268-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb268-20"><a href="r语言ggplot2热图.html#cb268-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb268-21"><a href="r语言ggplot2热图.html#cb268-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">60</span>,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">vjust=</span><span class="dv">1</span>),</span>
+<span id="cb268-22"><a href="r语言ggplot2热图.html#cb268-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb268-23"><a href="r语言ggplot2热图.html#cb268-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb268-24"><a href="r语言ggplot2热图.html#cb268-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span>expr_value))<span class="sc">+</span></span>
+<span id="cb268-25"><a href="r语言ggplot2热图.html#cb268-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb268-26"><a href="r语言ggplot2热图.html#cb268-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill=</span><span class="fu">guide_colorbar</span>(<span class="at">title =</span> <span class="st">&quot;AAA&quot;</span>,</span>
+<span id="cb268-27"><a href="r语言ggplot2热图.html#cb268-27" aria-hidden="true" tabindex="-1"></a>                             <span class="at">title.position =</span> <span class="st">&quot;top&quot;</span>,</span>
+<span id="cb268-28"><a href="r语言ggplot2热图.html#cb268-28" aria-hidden="true" tabindex="-1"></a>                             <span class="at">title.hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb268-29"><a href="r语言ggplot2热图.html#cb268-29" aria-hidden="true" tabindex="-1"></a>                             <span class="at">barwidth =</span> <span class="dv">20</span>,</span>
+<span id="cb268-30"><a href="r语言ggplot2热图.html#cb268-30" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ticks =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb268-31"><a href="r语言ggplot2热图.html#cb268-31" aria-hidden="true" tabindex="-1"></a>                             <span class="at">label =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
 <p>以上介绍的用来填充颜色的数据是连续型的，数据是离散的也是可以的，比如只关心某个基因在样本中是否表达，并不关心这个基因的表达量高低,示例数据如下</p>
 <p><img src="img/08-heatmap/006.png"></p>
 <p>这里A代表基因表达B代表基因不表达，这个AB可以用任意字符代替</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="r语言ggplot2热图.html#cb273-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb273-2"><a href="r语言ggplot2热图.html#cb273-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/04_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb273-3"><a href="r语言ggplot2热图.html#cb273-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="r语言ggplot2热图.html#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb269-2"><a href="r语言ggplot2热图.html#cb269-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/04_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb269-3"><a href="r语言ggplot2热图.html#cb269-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   gene_name Sample   expr 
 ##   &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;
@@ -634,37 +641,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4 A    
 ## 5 gene_1    sample_5 A    
 ## 6 gene_1    sample_6 A</code></pre>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="r语言ggplot2热图.html#cb275-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb275-2"><a href="r语言ggplot2热图.html#cb275-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb275-3"><a href="r语言ggplot2热图.html#cb275-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb275-4"><a href="r语言ggplot2热图.html#cb275-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb275-5"><a href="r语言ggplot2热图.html#cb275-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb275-6"><a href="r语言ggplot2热图.html#cb275-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb275-7"><a href="r语言ggplot2热图.html#cb275-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb275-8"><a href="r语言ggplot2热图.html#cb275-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb275-9"><a href="r语言ggplot2热图.html#cb275-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb275-10"><a href="r语言ggplot2热图.html#cb275-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb275-11"><a href="r语言ggplot2热图.html#cb275-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="r语言ggplot2热图.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb276-2"><a href="r语言ggplot2热图.html#cb276-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)<span class="sc">+</span></span>
-<span id="cb276-3"><a href="r语言ggplot2热图.html#cb276-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span><span class="ot">=</span><span class="st">&quot;#fe0904&quot;</span>,</span>
-<span id="cb276-4"><a href="r语言ggplot2热图.html#cb276-4" aria-hidden="true" tabindex="-1"></a>                               <span class="st">&quot;B&quot;</span><span class="ot">=</span><span class="st">&#39;#f9b54f&#39;</span>))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-119-2.png" width="672" /></p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="r语言ggplot2热图.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb277-2"><a href="r语言ggplot2热图.html#cb277-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)<span class="sc">+</span></span>
-<span id="cb277-3"><a href="r语言ggplot2热图.html#cb277-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span><span class="ot">=</span><span class="st">&quot;#fe0904&quot;</span>,</span>
-<span id="cb277-4"><a href="r语言ggplot2热图.html#cb277-4" aria-hidden="true" tabindex="-1"></a>                               <span class="st">&quot;B&quot;</span><span class="ot">=</span><span class="st">&#39;white&#39;</span>))<span class="sc">+</span></span>
-<span id="cb277-5"><a href="r语言ggplot2热图.html#cb277-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-119-3.png" width="672" /></p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="r语言ggplot2热图.html#cb271-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb271-2"><a href="r语言ggplot2热图.html#cb271-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb271-3"><a href="r语言ggplot2热图.html#cb271-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb271-4"><a href="r语言ggplot2热图.html#cb271-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb271-5"><a href="r语言ggplot2热图.html#cb271-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb271-6"><a href="r语言ggplot2热图.html#cb271-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb271-7"><a href="r语言ggplot2热图.html#cb271-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb271-8"><a href="r语言ggplot2热图.html#cb271-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb271-9"><a href="r语言ggplot2热图.html#cb271-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb271-10"><a href="r语言ggplot2热图.html#cb271-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb271-11"><a href="r语言ggplot2热图.html#cb271-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-226-1.png" width="672" /></p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="r语言ggplot2热图.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb272-2"><a href="r语言ggplot2热图.html#cb272-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)<span class="sc">+</span></span>
+<span id="cb272-3"><a href="r语言ggplot2热图.html#cb272-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span><span class="ot">=</span><span class="st">&quot;#fe0904&quot;</span>,</span>
+<span id="cb272-4"><a href="r语言ggplot2热图.html#cb272-4" aria-hidden="true" tabindex="-1"></a>                               <span class="st">&quot;B&quot;</span><span class="ot">=</span><span class="st">&#39;#f9b54f&#39;</span>))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-226-2.png" width="672" /></p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="r语言ggplot2热图.html#cb273-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb273-2"><a href="r语言ggplot2热图.html#cb273-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>)<span class="sc">+</span></span>
+<span id="cb273-3"><a href="r语言ggplot2热图.html#cb273-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span><span class="ot">=</span><span class="st">&quot;#fe0904&quot;</span>,</span>
+<span id="cb273-4"><a href="r语言ggplot2热图.html#cb273-4" aria-hidden="true" tabindex="-1"></a>                               <span class="st">&quot;B&quot;</span><span class="ot">=</span><span class="st">&#39;white&#39;</span>))<span class="sc">+</span></span>
+<span id="cb273-5"><a href="r语言ggplot2热图.html#cb273-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-226-3.png" width="672" /></p>
 </div>
 <div id="ggplot2气泡热图图" class="section level2" number="8.3">
 <h2><span class="header-section-number">8.3</span> ggplot2气泡热图图</h2>
 <p>如果x 和 y都是离散的，把热图函数geom_tile()换成geom_point()函数，然后用表达量的值映射点的大小 同时映射颜色 也可以归为热图的一种</p>
 <p>比如</p>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="r语言ggplot2热图.html#cb278-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb278-2"><a href="r语言ggplot2热图.html#cb278-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb278-3"><a href="r语言ggplot2热图.html#cb278-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="r语言ggplot2热图.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb274-2"><a href="r语言ggplot2热图.html#cb274-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb274-3"><a href="r语言ggplot2热图.html#cb274-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   gene_name Sample   expr_value
 ##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
@@ -674,23 +681,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4          4
 ## 5 gene_1    sample_5          2
 ## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="r语言ggplot2热图.html#cb280-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb280-2"><a href="r语言ggplot2热图.html#cb280-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb280-3"><a href="r语言ggplot2热图.html#cb280-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb280-4"><a href="r语言ggplot2热图.html#cb280-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb280-5"><a href="r语言ggplot2热图.html#cb280-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb280-6"><a href="r语言ggplot2热图.html#cb280-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb280-7"><a href="r语言ggplot2热图.html#cb280-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb280-8"><a href="r语言ggplot2热图.html#cb280-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb280-9"><a href="r语言ggplot2热图.html#cb280-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb280-10"><a href="r语言ggplot2热图.html#cb280-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb280-11"><a href="r语言ggplot2热图.html#cb280-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value,</span>
-<span id="cb280-12"><a href="r语言ggplot2热图.html#cb280-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size=</span>expr_value),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>,<span class="at">shape=</span><span class="dv">21</span>)</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="r语言ggplot2热图.html#cb276-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb276-2"><a href="r语言ggplot2热图.html#cb276-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb276-3"><a href="r语言ggplot2热图.html#cb276-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb276-4"><a href="r语言ggplot2热图.html#cb276-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb276-5"><a href="r语言ggplot2热图.html#cb276-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb276-6"><a href="r语言ggplot2热图.html#cb276-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb276-7"><a href="r语言ggplot2热图.html#cb276-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb276-8"><a href="r语言ggplot2热图.html#cb276-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb276-9"><a href="r语言ggplot2热图.html#cb276-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb276-10"><a href="r语言ggplot2热图.html#cb276-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb276-11"><a href="r语言ggplot2热图.html#cb276-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value,</span>
+<span id="cb276-12"><a href="r语言ggplot2热图.html#cb276-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size=</span>expr_value),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>,<span class="at">shape=</span><span class="dv">21</span>)</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
 <p>更改默认的配色和点的大小</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="r语言ggplot2热图.html#cb281-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb281-2"><a href="r语言ggplot2热图.html#cb281-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
-<span id="cb281-3"><a href="r语言ggplot2热图.html#cb281-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="r语言ggplot2热图.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb277-2"><a href="r语言ggplot2热图.html#cb277-2" aria-hidden="true" tabindex="-1"></a>dat01<span class="ot">&lt;-</span><span class="fu">read_excel</span>(<span class="st">&quot;example_data/08-heatmap/03_heatmap_example.xlsx&quot;</span>)</span>
+<span id="cb277-3"><a href="r语言ggplot2热图.html#cb277-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat01)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ##   gene_name Sample   expr_value
 ##   &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;
@@ -700,44 +707,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 gene_1    sample_4          4
 ## 5 gene_1    sample_5          2
 ## 6 gene_1    sample_6          5</code></pre>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="r语言ggplot2热图.html#cb283-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
-<span id="cb283-2"><a href="r语言ggplot2热图.html#cb283-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
-<span id="cb283-3"><a href="r语言ggplot2热图.html#cb283-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
-<span id="cb283-4"><a href="r语言ggplot2热图.html#cb283-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
-<span id="cb283-5"><a href="r语言ggplot2热图.html#cb283-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
-<span id="cb283-6"><a href="r语言ggplot2热图.html#cb283-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb283-7"><a href="r语言ggplot2热图.html#cb283-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb283-8"><a href="r语言ggplot2热图.html#cb283-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
-<span id="cb283-9"><a href="r语言ggplot2热图.html#cb283-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb283-10"><a href="r语言ggplot2热图.html#cb283-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
-<span id="cb283-11"><a href="r语言ggplot2热图.html#cb283-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value,</span>
-<span id="cb283-12"><a href="r语言ggplot2热图.html#cb283-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size=</span>expr_value),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>,<span class="at">shape=</span><span class="dv">21</span>)<span class="sc">+</span></span>
-<span id="cb283-13"><a href="r语言ggplot2热图.html#cb283-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
-<span id="cb283-14"><a href="r语言ggplot2热图.html#cb283-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb283-15"><a href="r语言ggplot2热图.html#cb283-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">20</span>),</span>
-<span id="cb283-16"><a href="r语言ggplot2热图.html#cb283-16" aria-hidden="true" tabindex="-1"></a>                        <span class="at">guide =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>)) ))</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-121-1.png" width="672" /></p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="r语言ggplot2热图.html#cb279-1" aria-hidden="true" tabindex="-1"></a>dat01<span class="sc">$</span>gene_name<span class="ot">&lt;-</span><span class="fu">factor</span>(dat01<span class="sc">$</span>gene_name,</span>
+<span id="cb279-2"><a href="r语言ggplot2热图.html#cb279-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;gene_1&quot;</span>,<span class="st">&quot;gene_2&quot;</span>,<span class="st">&quot;gene_3&quot;</span>,</span>
+<span id="cb279-3"><a href="r语言ggplot2热图.html#cb279-3" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_4&quot;</span>,<span class="st">&quot;gene_5&quot;</span>,<span class="st">&quot;gene_6&quot;</span>,</span>
+<span id="cb279-4"><a href="r语言ggplot2热图.html#cb279-4" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_7&quot;</span>,<span class="st">&quot;gene_8&quot;</span>,<span class="st">&quot;gene_9&quot;</span>,</span>
+<span id="cb279-5"><a href="r语言ggplot2热图.html#cb279-5" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">&quot;gene_10&quot;</span>))</span>
+<span id="cb279-6"><a href="r语言ggplot2热图.html#cb279-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb279-7"><a href="r语言ggplot2热图.html#cb279-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb279-8"><a href="r语言ggplot2热图.html#cb279-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb279-9"><a href="r语言ggplot2热图.html#cb279-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb279-10"><a href="r语言ggplot2热图.html#cb279-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>dat01,<span class="fu">aes</span>(<span class="at">x=</span>gene_name,<span class="at">y=</span>Sample))<span class="sc">+</span></span>
+<span id="cb279-11"><a href="r语言ggplot2热图.html#cb279-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">fill=</span>expr_value,</span>
+<span id="cb279-12"><a href="r语言ggplot2热图.html#cb279-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">size=</span>expr_value),<span class="at">color=</span><span class="st">&quot;blue&quot;</span>,<span class="at">shape=</span><span class="dv">21</span>)<span class="sc">+</span></span>
+<span id="cb279-13"><a href="r语言ggplot2热图.html#cb279-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_paletteer_c</span>(<span class="st">&quot;ggthemes::Classic Orange-White-Blue&quot;</span>,</span>
+<span id="cb279-14"><a href="r语言ggplot2热图.html#cb279-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb279-15"><a href="r语言ggplot2热图.html#cb279-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_continuous</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">20</span>),</span>
+<span id="cb279-16"><a href="r语言ggplot2热图.html#cb279-16" aria-hidden="true" tabindex="-1"></a>                        <span class="at">guide =</span> <span class="fu">guide_legend</span>(<span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>)) ))</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-228-1.png" width="672" /></p>
 </div>
 <div id="一个完整的例子" class="section level2" number="8.4">
 <h2><span class="header-section-number">8.4</span> 一个完整的例子</h2>
 <p>来源 <a href="https://www.royfrancis.com/a-guide-to-elegant-tiled-heatmaps-in-r-2019/" class="uri">https://www.royfrancis.com/a-guide-to-elegant-tiled-heatmaps-in-r-2019/</a></p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="r语言ggplot2热图.html#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="r语言ggplot2热图.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;reshape2&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:tidyr&#39;:
 ## 
 ##     smiths</code></pre>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="r语言ggplot2热图.html#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb287-2"><a href="r语言ggplot2热图.html#cb287-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;example_data/08-heatmap/measles_lev1.txt&quot;</span>,</span>
-<span id="cb287-3"><a href="r语言ggplot2热图.html#cb287-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">header =</span> T,</span>
-<span id="cb287-4"><a href="r语言ggplot2热图.html#cb287-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">stringsAsFactors =</span> F,</span>
-<span id="cb287-5"><a href="r语言ggplot2热图.html#cb287-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">skip =</span> <span class="dv">2</span>)</span>
-<span id="cb287-6"><a href="r语言ggplot2热图.html#cb287-6" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">melt</span>(m,<span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">&quot;YEAR&quot;</span>, <span class="st">&quot;WEEK&quot;</span>))</span>
-<span id="cb287-7"><a href="r语言ggplot2热图.html#cb287-7" aria-hidden="true" tabindex="-1"></a><span class="co">#rename column names</span></span>
-<span id="cb287-8"><a href="r语言ggplot2热图.html#cb287-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(m2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Week&quot;</span>, <span class="st">&quot;State&quot;</span>, <span class="st">&quot;Value&quot;</span>)</span>
-<span id="cb287-9"><a href="r语言ggplot2热图.html#cb287-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-10"><a href="r语言ggplot2热图.html#cb287-10" aria-hidden="true" tabindex="-1"></a><span class="co">#inspect data</span></span>
-<span id="cb287-11"><a href="r语言ggplot2热图.html#cb287-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(m2)</span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="r语言ggplot2热图.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb283-2"><a href="r语言ggplot2热图.html#cb283-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;example_data/08-heatmap/measles_lev1.txt&quot;</span>,</span>
+<span id="cb283-3"><a href="r语言ggplot2热图.html#cb283-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">header =</span> T,</span>
+<span id="cb283-4"><a href="r语言ggplot2热图.html#cb283-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">stringsAsFactors =</span> F,</span>
+<span id="cb283-5"><a href="r语言ggplot2热图.html#cb283-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">skip =</span> <span class="dv">2</span>)</span>
+<span id="cb283-6"><a href="r语言ggplot2热图.html#cb283-6" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">melt</span>(m,<span class="at">id.vars =</span> <span class="fu">c</span>(<span class="st">&quot;YEAR&quot;</span>, <span class="st">&quot;WEEK&quot;</span>))</span>
+<span id="cb283-7"><a href="r语言ggplot2热图.html#cb283-7" aria-hidden="true" tabindex="-1"></a><span class="co">#rename column names</span></span>
+<span id="cb283-8"><a href="r语言ggplot2热图.html#cb283-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(m2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Week&quot;</span>, <span class="st">&quot;State&quot;</span>, <span class="st">&quot;Value&quot;</span>)</span>
+<span id="cb283-9"><a href="r语言ggplot2热图.html#cb283-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb283-10"><a href="r语言ggplot2热图.html#cb283-10" aria-hidden="true" tabindex="-1"></a><span class="co">#inspect data</span></span>
+<span id="cb283-11"><a href="r语言ggplot2热图.html#cb283-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(m2)</span></code></pre></div>
 <pre><code>##   Year Week   State Value
 ## 1 1928    1 ALABAMA  3.67
 ## 2 1928    2 ALABAMA  6.25
@@ -745,71 +752,63 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 1928    4 ALABAMA 12.58
 ## 5 1928    5 ALABAMA  8.03
 ## 6 1928    6 ALABAMA  7.27</code></pre>
-<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="r语言ggplot2热图.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(m2<span class="sc">$</span>State)</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="r语言ggplot2热图.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(m2<span class="sc">$</span>State)</span></code></pre></div>
 <pre><code>## 
-##              ALABAMA               ALASKA              ARIZONA 
-##                 3952                 3952                 3952 
-##             ARKANSAS           CALIFORNIA             COLORADO 
-##                 3952                 3952                 3952 
-##          CONNECTICUT             DELAWARE DISTRICT.OF.COLUMBIA 
-##                 3952                 3952                 3952 
-##              FLORIDA              GEORGIA               HAWAII 
-##                 3952                 3952                 3952 
-##                IDAHO             ILLINOIS              INDIANA 
-##                 3952                 3952                 3952 
-##                 IOWA               KANSAS             KENTUCKY 
-##                 3952                 3952                 3952 
-##            LOUISIANA                MAINE             MARYLAND 
-##                 3952                 3952                 3952 
-##        MASSACHUSETTS             MICHIGAN            MINNESOTA 
-##                 3952                 3952                 3952 
-##          MISSISSIPPI             MISSOURI              MONTANA 
-##                 3952                 3952                 3952 
-##             NEBRASKA               NEVADA        NEW.HAMPSHIRE 
-##                 3952                 3952                 3952 
-##           NEW.JERSEY           NEW.MEXICO             NEW.YORK 
-##                 3952                 3952                 3952 
-##       NORTH.CAROLINA         NORTH.DAKOTA                 OHIO 
-##                 3952                 3952                 3952 
-##             OKLAHOMA               OREGON         PENNSYLVANIA 
-##                 3952                 3952                 3952 
-##         RHODE.ISLAND       SOUTH.CAROLINA         SOUTH.DAKOTA 
-##                 3952                 3952                 3952 
-##            TENNESSEE                TEXAS                 UTAH 
-##                 3952                 3952                 3952 
-##              VERMONT             VIRGINIA           WASHINGTON 
-##                 3952                 3952                 3952 
+##              ALABAMA               ALASKA              ARIZONA             ARKANSAS 
+##                 3952                 3952                 3952                 3952 
+##           CALIFORNIA             COLORADO          CONNECTICUT             DELAWARE 
+##                 3952                 3952                 3952                 3952 
+## DISTRICT.OF.COLUMBIA              FLORIDA              GEORGIA               HAWAII 
+##                 3952                 3952                 3952                 3952 
+##                IDAHO             ILLINOIS              INDIANA                 IOWA 
+##                 3952                 3952                 3952                 3952 
+##               KANSAS             KENTUCKY            LOUISIANA                MAINE 
+##                 3952                 3952                 3952                 3952 
+##             MARYLAND        MASSACHUSETTS             MICHIGAN            MINNESOTA 
+##                 3952                 3952                 3952                 3952 
+##          MISSISSIPPI             MISSOURI              MONTANA             NEBRASKA 
+##                 3952                 3952                 3952                 3952 
+##               NEVADA        NEW.HAMPSHIRE           NEW.JERSEY           NEW.MEXICO 
+##                 3952                 3952                 3952                 3952 
+##             NEW.YORK       NORTH.CAROLINA         NORTH.DAKOTA                 OHIO 
+##                 3952                 3952                 3952                 3952 
+##             OKLAHOMA               OREGON         PENNSYLVANIA         RHODE.ISLAND 
+##                 3952                 3952                 3952                 3952 
+##       SOUTH.CAROLINA         SOUTH.DAKOTA            TENNESSEE                TEXAS 
+##                 3952                 3952                 3952                 3952 
+##                 UTAH              VERMONT             VIRGINIA           WASHINGTON 
+##                 3952                 3952                 3952                 3952 
 ##        WEST.VIRGINIA            WISCONSIN              WYOMING 
 ##                 3952                 3952                 3952</code></pre>
-<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="r语言ggplot2热图.html#cb291-1" aria-hidden="true" tabindex="-1"></a>camelCase <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">string=</span><span class="cn">NULL</span>,<span class="at">separator=</span><span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>){</span>
-<span id="cb291-2"><a href="r语言ggplot2热图.html#cb291-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(string)) </span>
-<span id="cb291-3"><a href="r语言ggplot2热图.html#cb291-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;No input string.n&quot;</span>)</span>
-<span id="cb291-4"><a href="r语言ggplot2热图.html#cb291-4" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(string, separator)</span>
-<span id="cb291-5"><a href="r语言ggplot2热图.html#cb291-5" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">tolower</span>(s[[<span class="dv">1</span>]])</span>
-<span id="cb291-6"><a href="r语言ggplot2热图.html#cb291-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="fu">toupper</span>(<span class="fu">substring</span>(s, <span class="dv">1</span>, <span class="dv">1</span>)), <span class="fu">substring</span>(s, <span class="dv">2</span>),<span class="at">sep =</span> <span class="st">&quot;&quot;</span>, <span class="at">collapse =</span> <span class="st">&quot; &quot;</span>)</span>
-<span id="cb291-7"><a href="r语言ggplot2热图.html#cb291-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb291-8"><a href="r语言ggplot2热图.html#cb291-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb291-9"><a href="r语言ggplot2热图.html#cb291-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb291-10"><a href="r语言ggplot2热图.html#cb291-10" aria-hidden="true" tabindex="-1"></a><span class="co">#change variable to character, convert to camel case,</span></span>
-<span id="cb291-11"><a href="r语言ggplot2热图.html#cb291-11" aria-hidden="true" tabindex="-1"></a><span class="co">#remove dot and change variable back to factor</span></span>
-<span id="cb291-12"><a href="r语言ggplot2热图.html#cb291-12" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>State <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(<span class="fu">sapply</span>(<span class="fu">as.character</span>(m2<span class="sc">$</span>State),camelCase)))</span>
-<span id="cb291-13"><a href="r语言ggplot2热图.html#cb291-13" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">factor</span>(m2<span class="sc">$</span>Year)</span>
-<span id="cb291-14"><a href="r语言ggplot2热图.html#cb291-14" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>Week <span class="ot">&lt;-</span> <span class="fu">factor</span>(m2<span class="sc">$</span>Week)</span>
-<span id="cb291-15"><a href="r语言ggplot2热图.html#cb291-15" aria-hidden="true" tabindex="-1"></a><span class="co">#also converts &#39;-&#39; to NA</span></span>
-<span id="cb291-16"><a href="r语言ggplot2热图.html#cb291-16" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>Value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(m2<span class="sc">$</span>Value)</span></code></pre></div>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="r语言ggplot2热图.html#cb287-1" aria-hidden="true" tabindex="-1"></a>camelCase <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">string=</span><span class="cn">NULL</span>,<span class="at">separator=</span><span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>){</span>
+<span id="cb287-2"><a href="r语言ggplot2热图.html#cb287-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.null</span>(string)) </span>
+<span id="cb287-3"><a href="r语言ggplot2热图.html#cb287-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;No input string.n&quot;</span>)</span>
+<span id="cb287-4"><a href="r语言ggplot2热图.html#cb287-4" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(string, separator)</span>
+<span id="cb287-5"><a href="r语言ggplot2热图.html#cb287-5" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">tolower</span>(s[[<span class="dv">1</span>]])</span>
+<span id="cb287-6"><a href="r语言ggplot2热图.html#cb287-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste</span>(<span class="fu">toupper</span>(<span class="fu">substring</span>(s, <span class="dv">1</span>, <span class="dv">1</span>)), <span class="fu">substring</span>(s, <span class="dv">2</span>),<span class="at">sep =</span> <span class="st">&quot;&quot;</span>, <span class="at">collapse =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb287-7"><a href="r语言ggplot2热图.html#cb287-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb287-8"><a href="r语言ggplot2热图.html#cb287-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb287-9"><a href="r语言ggplot2热图.html#cb287-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb287-10"><a href="r语言ggplot2热图.html#cb287-10" aria-hidden="true" tabindex="-1"></a><span class="co">#change variable to character, convert to camel case,</span></span>
+<span id="cb287-11"><a href="r语言ggplot2热图.html#cb287-11" aria-hidden="true" tabindex="-1"></a><span class="co">#remove dot and change variable back to factor</span></span>
+<span id="cb287-12"><a href="r语言ggplot2热图.html#cb287-12" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>State <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(<span class="fu">sapply</span>(<span class="fu">as.character</span>(m2<span class="sc">$</span>State),camelCase)))</span>
+<span id="cb287-13"><a href="r语言ggplot2热图.html#cb287-13" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">factor</span>(m2<span class="sc">$</span>Year)</span>
+<span id="cb287-14"><a href="r语言ggplot2热图.html#cb287-14" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>Week <span class="ot">&lt;-</span> <span class="fu">factor</span>(m2<span class="sc">$</span>Week)</span>
+<span id="cb287-15"><a href="r语言ggplot2热图.html#cb287-15" aria-hidden="true" tabindex="-1"></a><span class="co">#also converts &#39;-&#39; to NA</span></span>
+<span id="cb287-16"><a href="r语言ggplot2热图.html#cb287-16" aria-hidden="true" tabindex="-1"></a>m2<span class="sc">$</span>Value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(m2<span class="sc">$</span>Value)</span></code></pre></div>
 <pre><code>## Warning: NAs introduced by coercion</code></pre>
-<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="r语言ggplot2热图.html#cb293-1" aria-hidden="true" tabindex="-1"></a>naSum <span class="ot">&lt;-</span> <span class="cf">function</span>(x)</span>
-<span id="cb293-2"><a href="r语言ggplot2热图.html#cb293-2" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb293-3"><a href="r语言ggplot2热图.html#cb293-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">all</span>(<span class="fu">is.na</span>(x))) val <span class="ot">&lt;-</span> <span class="fu">sum</span>(x,<span class="at">na.rm=</span>F)</span>
-<span id="cb293-4"><a href="r语言ggplot2热图.html#cb293-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(x))) val <span class="ot">&lt;-</span> <span class="fu">sum</span>(x,<span class="at">na.rm=</span>T)</span>
-<span id="cb293-5"><a href="r语言ggplot2热图.html#cb293-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(val)</span>
-<span id="cb293-6"><a href="r语言ggplot2热图.html#cb293-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb293-7"><a href="r语言ggplot2热图.html#cb293-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb293-8"><a href="r语言ggplot2热图.html#cb293-8" aria-hidden="true" tabindex="-1"></a><span class="co">#sums incidences for all weeks into one year</span></span>
-<span id="cb293-9"><a href="r语言ggplot2热图.html#cb293-9" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">ddply</span>(m2,<span class="fu">c</span>(<span class="st">&quot;Year&quot;</span>,<span class="st">&quot;State&quot;</span>),<span class="at">Incidence=</span><span class="fu">round</span>(<span class="fu">naSum</span>(Value),<span class="dv">0</span>),plyr<span class="sc">::</span>summarise)</span>
-<span id="cb293-10"><a href="r语言ggplot2热图.html#cb293-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb293-11"><a href="r语言ggplot2热图.html#cb293-11" aria-hidden="true" tabindex="-1"></a><span class="co">#inspect data</span></span>
-<span id="cb293-12"><a href="r语言ggplot2热图.html#cb293-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(m3)</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="r语言ggplot2热图.html#cb289-1" aria-hidden="true" tabindex="-1"></a>naSum <span class="ot">&lt;-</span> <span class="cf">function</span>(x)</span>
+<span id="cb289-2"><a href="r语言ggplot2热图.html#cb289-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb289-3"><a href="r语言ggplot2热图.html#cb289-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">all</span>(<span class="fu">is.na</span>(x))) val <span class="ot">&lt;-</span> <span class="fu">sum</span>(x,<span class="at">na.rm=</span>F)</span>
+<span id="cb289-4"><a href="r语言ggplot2热图.html#cb289-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">all</span>(<span class="fu">is.na</span>(x))) val <span class="ot">&lt;-</span> <span class="fu">sum</span>(x,<span class="at">na.rm=</span>T)</span>
+<span id="cb289-5"><a href="r语言ggplot2热图.html#cb289-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(val)</span>
+<span id="cb289-6"><a href="r语言ggplot2热图.html#cb289-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb289-7"><a href="r语言ggplot2热图.html#cb289-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb289-8"><a href="r语言ggplot2热图.html#cb289-8" aria-hidden="true" tabindex="-1"></a><span class="co">#sums incidences for all weeks into one year</span></span>
+<span id="cb289-9"><a href="r语言ggplot2热图.html#cb289-9" aria-hidden="true" tabindex="-1"></a>m3 <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">ddply</span>(m2,<span class="fu">c</span>(<span class="st">&quot;Year&quot;</span>,<span class="st">&quot;State&quot;</span>),<span class="at">Incidence=</span><span class="fu">round</span>(<span class="fu">naSum</span>(Value),<span class="dv">0</span>),plyr<span class="sc">::</span>summarise)</span>
+<span id="cb289-10"><a href="r语言ggplot2热图.html#cb289-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb289-11"><a href="r语言ggplot2热图.html#cb289-11" aria-hidden="true" tabindex="-1"></a><span class="co">#inspect data</span></span>
+<span id="cb289-12"><a href="r语言ggplot2热图.html#cb289-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(m3)</span></code></pre></div>
 <pre><code>##   Year      State Incidence
 ## 1 1928    Alabama       335
 ## 2 1928     Alaska        NA
@@ -817,83 +816,82 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 1928   Arkansas       482
 ## 5 1928 California        69
 ## 6 1928   Colorado       207</code></pre>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="r语言ggplot2热图.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(m3)</span></code></pre></div>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="r语言ggplot2热图.html#cb291-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(m3)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    3876 obs. of  3 variables:
 ##  $ Year     : Factor w/ 76 levels &quot;1928&quot;,&quot;1929&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ State    : Factor w/ 51 levels &quot;Alabama&quot;,&quot;Alaska&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
 ##  $ Incidence: num  335 NA 201 482 69 207 635 256 536 120 ...</code></pre>
-<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="r语言ggplot2热图.html#cb297-1" aria-hidden="true" tabindex="-1"></a>m3<span class="sc">$</span>State <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(m3<span class="sc">$</span>State),<span class="at">levels=</span><span class="fu">rev</span>(<span class="fu">levels</span>(m3<span class="sc">$</span>State)))</span>
-<span id="cb297-2"><a href="r语言ggplot2热图.html#cb297-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb297-3"><a href="r语言ggplot2热图.html#cb297-3" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new variable from incidence</span></span>
-<span id="cb297-4"><a href="r语言ggplot2热图.html#cb297-4" aria-hidden="true" tabindex="-1"></a>m3<span class="sc">$</span>IncidenceFactor <span class="ot">&lt;-</span> <span class="fu">cut</span>(m3<span class="sc">$</span>Incidence,</span>
-<span id="cb297-5"><a href="r语言ggplot2热图.html#cb297-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>,<span class="dv">500</span>,<span class="dv">1000</span>,<span class="fu">max</span>(m3<span class="sc">$</span>Incidence,<span class="at">na.rm=</span>T)),</span>
-<span id="cb297-6"><a href="r语言ggplot2热图.html#cb297-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;0-1&quot;</span>,<span class="st">&quot;1-10&quot;</span>,<span class="st">&quot;10-100&quot;</span>,<span class="st">&quot;100-500&quot;</span>,<span class="st">&quot;500-1000&quot;</span>,<span class="st">&quot;&gt;1000&quot;</span>))</span>
-<span id="cb297-7"><a href="r语言ggplot2热图.html#cb297-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb297-8"><a href="r语言ggplot2热图.html#cb297-8" aria-hidden="true" tabindex="-1"></a><span class="co">#change level order</span></span>
-<span id="cb297-9"><a href="r语言ggplot2热图.html#cb297-9" aria-hidden="true" tabindex="-1"></a>m3<span class="sc">$</span>IncidenceFactor <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(m3<span class="sc">$</span>IncidenceFactor),</span>
-<span id="cb297-10"><a href="r语言ggplot2热图.html#cb297-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">rev</span>(<span class="fu">levels</span>(m3<span class="sc">$</span>IncidenceFactor)))</span>
-<span id="cb297-11"><a href="r语言ggplot2热图.html#cb297-11" aria-hidden="true" tabindex="-1"></a>textcol <span class="ot">&lt;-</span> <span class="st">&quot;grey40&quot;</span></span>
-<span id="cb297-12"><a href="r语言ggplot2热图.html#cb297-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb297-13"><a href="r语言ggplot2热图.html#cb297-13" aria-hidden="true" tabindex="-1"></a><span class="co">#modified ggplot</span></span>
-<span id="cb297-14"><a href="r语言ggplot2热图.html#cb297-14" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(m3,<span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>State,<span class="at">fill=</span>IncidenceFactor))<span class="sc">+</span></span>
-<span id="cb297-15"><a href="r语言ggplot2热图.html#cb297-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>()<span class="sc">+</span></span>
-<span id="cb297-16"><a href="r语言ggplot2热图.html#cb297-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#redrawing tiles to remove cross lines from legend</span></span>
-<span id="cb297-17"><a href="r语言ggplot2热图.html#cb297-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">colour=</span><span class="st">&quot;white&quot;</span>,<span class="at">size=</span><span class="fl">0.25</span>, <span class="at">show_guide=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb297-18"><a href="r语言ggplot2热图.html#cb297-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove axis labels, add title</span></span>
-<span id="cb297-19"><a href="r语言ggplot2热图.html#cb297-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>,<span class="at">y=</span><span class="st">&quot;&quot;</span>,<span class="at">title=</span><span class="st">&quot;Incidence of Measles in the US&quot;</span>)<span class="sc">+</span></span>
-<span id="cb297-20"><a href="r语言ggplot2热图.html#cb297-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove extra space</span></span>
-<span id="cb297-21"><a href="r语言ggplot2热图.html#cb297-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))<span class="sc">+</span></span>
-<span id="cb297-22"><a href="r语言ggplot2热图.html#cb297-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#custom breaks on x-axis</span></span>
-<span id="cb297-23"><a href="r语言ggplot2热图.html#cb297-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),</span>
-<span id="cb297-24"><a href="r语言ggplot2热图.html#cb297-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">breaks=</span><span class="fu">c</span>(<span class="st">&quot;1930&quot;</span>,<span class="st">&quot;1940&quot;</span>,<span class="st">&quot;1950&quot;</span>,<span class="st">&quot;1960&quot;</span>,<span class="st">&quot;1970&quot;</span>,<span class="st">&quot;1980&quot;</span>,<span class="st">&quot;1990&quot;</span>,<span class="st">&quot;2000&quot;</span>))<span class="sc">+</span></span>
-<span id="cb297-25"><a href="r语言ggplot2热图.html#cb297-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#custom colours for cut levels and na values</span></span>
-<span id="cb297-26"><a href="r语言ggplot2热图.html#cb297-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;#d53e4f&quot;</span>,<span class="st">&quot;#f46d43&quot;</span>,<span class="st">&quot;#fdae61&quot;</span>,</span>
-<span id="cb297-27"><a href="r语言ggplot2热图.html#cb297-27" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;#fee08b&quot;</span>,<span class="st">&quot;#e6f598&quot;</span>,<span class="st">&quot;#abdda4&quot;</span>,<span class="st">&quot;#ddf1da&quot;</span>),<span class="at">na.value=</span><span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
-<span id="cb297-28"><a href="r语言ggplot2热图.html#cb297-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">#mark year of vaccination</span></span>
-<span id="cb297-29"><a href="r语言ggplot2热图.html#cb297-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">36</span>),<span class="at">size=</span><span class="fl">3.4</span>,<span class="at">alpha=</span><span class="fl">0.24</span>)<span class="sc">+</span></span>
-<span id="cb297-30"><a href="r语言ggplot2热图.html#cb297-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#equal aspect ratio x and y axis</span></span>
-<span id="cb297-31"><a href="r语言ggplot2热图.html#cb297-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#coord_fixed()+</span></span>
-<span id="cb297-32"><a href="r语言ggplot2热图.html#cb297-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set base size for all font elements</span></span>
-<span id="cb297-33"><a href="r语言ggplot2热图.html#cb297-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_grey</span>(<span class="at">base_size=</span><span class="dv">10</span>)<span class="sc">+</span></span>
-<span id="cb297-34"><a href="r语言ggplot2热图.html#cb297-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme options</span></span>
-<span id="cb297-35"><a href="r语言ggplot2热图.html#cb297-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb297-36"><a href="r语言ggplot2热图.html#cb297-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove legend title</span></span>
-<span id="cb297-37"><a href="r语言ggplot2热图.html#cb297-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb297-38"><a href="r语言ggplot2热图.html#cb297-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove legend margin</span></span>
-<span id="cb297-39"><a href="r语言ggplot2热图.html#cb297-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.margin =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">0</span>,<span class="st">&quot;cm&quot;</span>),</span>
-<span id="cb297-40"><a href="r语言ggplot2热图.html#cb297-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change legend text properties</span></span>
-<span id="cb297-41"><a href="r语言ggplot2热图.html#cb297-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">colour=</span>textcol,<span class="at">size=</span><span class="dv">7</span>,<span class="at">face=</span><span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb297-42"><a href="r语言ggplot2热图.html#cb297-42" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change legend key height</span></span>
-<span id="cb297-43"><a href="r语言ggplot2热图.html#cb297-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.height=</span>grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fl">0.8</span>,<span class="st">&quot;cm&quot;</span>),</span>
-<span id="cb297-44"><a href="r语言ggplot2热图.html#cb297-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">#set a slim legend</span></span>
-<span id="cb297-45"><a href="r语言ggplot2热图.html#cb297-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.width=</span>grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fl">0.2</span>,<span class="st">&quot;cm&quot;</span>),</span>
-<span id="cb297-46"><a href="r语言ggplot2热图.html#cb297-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">#set x axis text size and colour</span></span>
-<span id="cb297-47"><a href="r语言ggplot2热图.html#cb297-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">colour=</span>textcol),</span>
-<span id="cb297-48"><a href="r语言ggplot2热图.html#cb297-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">#set y axis text colour and adjust vertical justification</span></span>
-<span id="cb297-49"><a href="r语言ggplot2热图.html#cb297-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y=</span><span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="fl">0.2</span>,<span class="at">colour=</span>textcol,<span class="at">size=</span><span class="dv">4</span>),</span>
-<span id="cb297-50"><a href="r语言ggplot2热图.html#cb297-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change axis ticks thickness</span></span>
-<span id="cb297-51"><a href="r语言ggplot2热图.html#cb297-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks=</span><span class="fu">element_line</span>(<span class="at">size=</span><span class="fl">0.4</span>),</span>
-<span id="cb297-52"><a href="r语言ggplot2热图.html#cb297-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change title font, size, colour and justification</span></span>
-<span id="cb297-53"><a href="r语言ggplot2热图.html#cb297-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">colour=</span>textcol,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">size=</span><span class="dv">14</span>,<span class="at">face=</span><span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb297-54"><a href="r语言ggplot2热图.html#cb297-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove plot background</span></span>
-<span id="cb297-55"><a href="r语言ggplot2热图.html#cb297-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb297-56"><a href="r语言ggplot2热图.html#cb297-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove plot border</span></span>
-<span id="cb297-57"><a href="r语言ggplot2热图.html#cb297-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border=</span><span class="fu">element_blank</span>())</span></code></pre></div>
-<pre><code>## Warning: `show_guide` has been deprecated. Please use
-## `show.legend` instead.</code></pre>
-<pre><code>## Warning: `legend.margin` must be specified using `margin()`. For
-## the old behavior use legend.spacing</code></pre>
-<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="r语言ggplot2热图.html#cb300-1" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-122-1.png" width="672" /></p>
-<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="r语言ggplot2热图.html#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="r语言ggplot2热图.html#cb293-1" aria-hidden="true" tabindex="-1"></a>m3<span class="sc">$</span>State <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(m3<span class="sc">$</span>State),<span class="at">levels=</span><span class="fu">rev</span>(<span class="fu">levels</span>(m3<span class="sc">$</span>State)))</span>
+<span id="cb293-2"><a href="r语言ggplot2热图.html#cb293-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-3"><a href="r语言ggplot2热图.html#cb293-3" aria-hidden="true" tabindex="-1"></a><span class="co">#create a new variable from incidence</span></span>
+<span id="cb293-4"><a href="r语言ggplot2热图.html#cb293-4" aria-hidden="true" tabindex="-1"></a>m3<span class="sc">$</span>IncidenceFactor <span class="ot">&lt;-</span> <span class="fu">cut</span>(m3<span class="sc">$</span>Incidence,</span>
+<span id="cb293-5"><a href="r语言ggplot2热图.html#cb293-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">breaks =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">10</span>,<span class="dv">100</span>,<span class="dv">500</span>,<span class="dv">1000</span>,<span class="fu">max</span>(m3<span class="sc">$</span>Incidence,<span class="at">na.rm=</span>T)),</span>
+<span id="cb293-6"><a href="r语言ggplot2热图.html#cb293-6" aria-hidden="true" tabindex="-1"></a>                          <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;0&quot;</span>,<span class="st">&quot;0-1&quot;</span>,<span class="st">&quot;1-10&quot;</span>,<span class="st">&quot;10-100&quot;</span>,<span class="st">&quot;100-500&quot;</span>,<span class="st">&quot;500-1000&quot;</span>,<span class="st">&quot;&gt;1000&quot;</span>))</span>
+<span id="cb293-7"><a href="r语言ggplot2热图.html#cb293-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-8"><a href="r语言ggplot2热图.html#cb293-8" aria-hidden="true" tabindex="-1"></a><span class="co">#change level order</span></span>
+<span id="cb293-9"><a href="r语言ggplot2热图.html#cb293-9" aria-hidden="true" tabindex="-1"></a>m3<span class="sc">$</span>IncidenceFactor <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">as.character</span>(m3<span class="sc">$</span>IncidenceFactor),</span>
+<span id="cb293-10"><a href="r语言ggplot2热图.html#cb293-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">levels=</span><span class="fu">rev</span>(<span class="fu">levels</span>(m3<span class="sc">$</span>IncidenceFactor)))</span>
+<span id="cb293-11"><a href="r语言ggplot2热图.html#cb293-11" aria-hidden="true" tabindex="-1"></a>textcol <span class="ot">&lt;-</span> <span class="st">&quot;grey40&quot;</span></span>
+<span id="cb293-12"><a href="r语言ggplot2热图.html#cb293-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-13"><a href="r语言ggplot2热图.html#cb293-13" aria-hidden="true" tabindex="-1"></a><span class="co">#modified ggplot</span></span>
+<span id="cb293-14"><a href="r语言ggplot2热图.html#cb293-14" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(m3,<span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>State,<span class="at">fill=</span>IncidenceFactor))<span class="sc">+</span></span>
+<span id="cb293-15"><a href="r语言ggplot2热图.html#cb293-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>()<span class="sc">+</span></span>
+<span id="cb293-16"><a href="r语言ggplot2热图.html#cb293-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#redrawing tiles to remove cross lines from legend</span></span>
+<span id="cb293-17"><a href="r语言ggplot2热图.html#cb293-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">colour=</span><span class="st">&quot;white&quot;</span>,<span class="at">size=</span><span class="fl">0.25</span>, <span class="at">show_guide=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb293-18"><a href="r语言ggplot2热图.html#cb293-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove axis labels, add title</span></span>
+<span id="cb293-19"><a href="r语言ggplot2热图.html#cb293-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">&quot;&quot;</span>,<span class="at">y=</span><span class="st">&quot;&quot;</span>,<span class="at">title=</span><span class="st">&quot;Incidence of Measles in the US&quot;</span>)<span class="sc">+</span></span>
+<span id="cb293-20"><a href="r语言ggplot2热图.html#cb293-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove extra space</span></span>
+<span id="cb293-21"><a href="r语言ggplot2热图.html#cb293-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb293-22"><a href="r语言ggplot2热图.html#cb293-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#custom breaks on x-axis</span></span>
+<span id="cb293-23"><a href="r语言ggplot2热图.html#cb293-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb293-24"><a href="r语言ggplot2热图.html#cb293-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">breaks=</span><span class="fu">c</span>(<span class="st">&quot;1930&quot;</span>,<span class="st">&quot;1940&quot;</span>,<span class="st">&quot;1950&quot;</span>,<span class="st">&quot;1960&quot;</span>,<span class="st">&quot;1970&quot;</span>,<span class="st">&quot;1980&quot;</span>,<span class="st">&quot;1990&quot;</span>,<span class="st">&quot;2000&quot;</span>))<span class="sc">+</span></span>
+<span id="cb293-25"><a href="r语言ggplot2热图.html#cb293-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#custom colours for cut levels and na values</span></span>
+<span id="cb293-26"><a href="r语言ggplot2热图.html#cb293-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">&quot;#d53e4f&quot;</span>,<span class="st">&quot;#f46d43&quot;</span>,<span class="st">&quot;#fdae61&quot;</span>,</span>
+<span id="cb293-27"><a href="r语言ggplot2热图.html#cb293-27" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&quot;#fee08b&quot;</span>,<span class="st">&quot;#e6f598&quot;</span>,<span class="st">&quot;#abdda4&quot;</span>,<span class="st">&quot;#ddf1da&quot;</span>),<span class="at">na.value=</span><span class="st">&quot;grey90&quot;</span>)<span class="sc">+</span></span>
+<span id="cb293-28"><a href="r语言ggplot2热图.html#cb293-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">#mark year of vaccination</span></span>
+<span id="cb293-29"><a href="r语言ggplot2热图.html#cb293-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">36</span>),<span class="at">size=</span><span class="fl">3.4</span>,<span class="at">alpha=</span><span class="fl">0.24</span>)<span class="sc">+</span></span>
+<span id="cb293-30"><a href="r语言ggplot2热图.html#cb293-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#equal aspect ratio x and y axis</span></span>
+<span id="cb293-31"><a href="r语言ggplot2热图.html#cb293-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#coord_fixed()+</span></span>
+<span id="cb293-32"><a href="r语言ggplot2热图.html#cb293-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">#set base size for all font elements</span></span>
+<span id="cb293-33"><a href="r语言ggplot2热图.html#cb293-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_grey</span>(<span class="at">base_size=</span><span class="dv">10</span>)<span class="sc">+</span></span>
+<span id="cb293-34"><a href="r语言ggplot2热图.html#cb293-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme options</span></span>
+<span id="cb293-35"><a href="r语言ggplot2热图.html#cb293-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb293-36"><a href="r语言ggplot2热图.html#cb293-36" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove legend title</span></span>
+<span id="cb293-37"><a href="r语言ggplot2热图.html#cb293-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb293-38"><a href="r语言ggplot2热图.html#cb293-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove legend margin</span></span>
+<span id="cb293-39"><a href="r语言ggplot2热图.html#cb293-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.margin =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">0</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb293-40"><a href="r语言ggplot2热图.html#cb293-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change legend text properties</span></span>
+<span id="cb293-41"><a href="r语言ggplot2热图.html#cb293-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text=</span><span class="fu">element_text</span>(<span class="at">colour=</span>textcol,<span class="at">size=</span><span class="dv">7</span>,<span class="at">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb293-42"><a href="r语言ggplot2热图.html#cb293-42" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change legend key height</span></span>
+<span id="cb293-43"><a href="r语言ggplot2热图.html#cb293-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.height=</span>grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fl">0.8</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb293-44"><a href="r语言ggplot2热图.html#cb293-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">#set a slim legend</span></span>
+<span id="cb293-45"><a href="r语言ggplot2热图.html#cb293-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key.width=</span>grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fl">0.2</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb293-46"><a href="r语言ggplot2热图.html#cb293-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">#set x axis text size and colour</span></span>
+<span id="cb293-47"><a href="r语言ggplot2热图.html#cb293-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>,<span class="at">colour=</span>textcol),</span>
+<span id="cb293-48"><a href="r语言ggplot2热图.html#cb293-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">#set y axis text colour and adjust vertical justification</span></span>
+<span id="cb293-49"><a href="r语言ggplot2热图.html#cb293-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y=</span><span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="fl">0.2</span>,<span class="at">colour=</span>textcol,<span class="at">size=</span><span class="dv">4</span>),</span>
+<span id="cb293-50"><a href="r语言ggplot2热图.html#cb293-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change axis ticks thickness</span></span>
+<span id="cb293-51"><a href="r语言ggplot2热图.html#cb293-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks=</span><span class="fu">element_line</span>(<span class="at">size=</span><span class="fl">0.4</span>),</span>
+<span id="cb293-52"><a href="r语言ggplot2热图.html#cb293-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">#change title font, size, colour and justification</span></span>
+<span id="cb293-53"><a href="r语言ggplot2热图.html#cb293-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">colour=</span>textcol,<span class="at">hjust=</span><span class="dv">0</span>,<span class="at">size=</span><span class="dv">14</span>,<span class="at">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb293-54"><a href="r语言ggplot2热图.html#cb293-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove plot background</span></span>
+<span id="cb293-55"><a href="r语言ggplot2热图.html#cb293-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb293-56"><a href="r语言ggplot2热图.html#cb293-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">#remove plot border</span></span>
+<span id="cb293-57"><a href="r语言ggplot2热图.html#cb293-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border=</span><span class="fu">element_blank</span>())</span></code></pre></div>
+<pre><code>## Warning: `show_guide` has been deprecated. Please use `show.legend` instead.</code></pre>
+<pre><code>## Warning: `legend.margin` must be specified using `margin()`. For the old behavior use
+## legend.spacing</code></pre>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="r语言ggplot2热图.html#cb296-1" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="r语言ggplot2热图.html#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code></pre></div>
 <pre><code>## Warning: package &#39;RColorBrewer&#39; was built under R version 4.0.5</code></pre>
-<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="r语言ggplot2热图.html#cb303-1" aria-hidden="true" tabindex="-1"></a><span class="co">#change the scale_fill_manual from previous code to below</span></span>
-<span id="cb303-2"><a href="r语言ggplot2热图.html#cb303-2" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span></span>
-<span id="cb303-3"><a href="r语言ggplot2热图.html#cb303-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">rev</span>(<span class="fu">brewer.pal</span>(<span class="dv">7</span>,<span class="st">&quot;YlGnBu&quot;</span>)),</span>
-<span id="cb303-4"><a href="r语言ggplot2热图.html#cb303-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.value=</span><span class="st">&quot;grey90&quot;</span>)</span></code></pre></div>
-<pre><code>## Scale for &#39;fill&#39; is already present. Adding another scale for
-## &#39;fill&#39;, which will replace the existing scale.</code></pre>
-<p><img src="bookdownproj_files/figure-html/unnamed-chunk-122-2.png" width="672" /></p>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="r语言ggplot2热图.html#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="co">#change the scale_fill_manual from previous code to below</span></span>
+<span id="cb299-2"><a href="r语言ggplot2热图.html#cb299-2" aria-hidden="true" tabindex="-1"></a>p<span class="sc">+</span></span>
+<span id="cb299-3"><a href="r语言ggplot2热图.html#cb299-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">rev</span>(<span class="fu">brewer.pal</span>(<span class="dv">7</span>,<span class="st">&quot;YlGnBu&quot;</span>)),</span>
+<span id="cb299-4"><a href="r语言ggplot2热图.html#cb299-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">na.value=</span><span class="st">&quot;grey90&quot;</span>)</span></code></pre></div>
+<pre><code>## Scale for &#39;fill&#39; is already present. Adding another scale for &#39;fill&#39;, which will replace
+## the existing scale.</code></pre>
+<p><img src="bookdownproj_files/figure-html/unnamed-chunk-229-2.png" width="672" /></p>
 
 </div>
 </div>
